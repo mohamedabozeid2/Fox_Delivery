@@ -67,6 +67,7 @@ class RegisterCubit extends Cubit<FoxRegisterStates> {
         .doc(uId)
         .set(model.toMap())
         .then((value) {
+      FirebaseAuth.instance.currentUser!.sendEmailVerification();
       FoxCubit.get(context).getUserData(userID: uId);
       emit(FoxCreateUserSuccessState(uId));
     }).catchError((error) {

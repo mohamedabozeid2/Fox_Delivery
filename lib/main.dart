@@ -13,6 +13,7 @@ import 'package:fox_delivery/shared/network/local/CacheHelper.dart';
 import 'package:fox_delivery/styles/Themes.dart';
 import 'package:get/get.dart';
 import 'firebase_options.dart';
+import 'modules/BoardingScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,16 +30,31 @@ void main() async {
   } else {
     CacheHelper.getData(key: 'language');
   }
+
+
+  Widget startWidget;
+  if(CacheHelper.getData(key: 'onBoarding') == null){
+    onBoarding = false;
+    startWidget = BoardingScreen();
+  }else{
+    onBoarding = true;
+    startWidget = FirstScreen();
+  }
   BlocOverrides.runZoned(
     () {
-      runApp(MyApp());
+      runApp(MyApp(startWidget: startWidget,));
     },
     blocObserver: MyBlocObserver(),
   );
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+
+  Widget startWidget;
+  MyApp({
+    required this.startWidget
+});
+
   @override
   Widget build(BuildContext context) {
     Get.put(MyLocaleController());
@@ -54,7 +70,7 @@ class MyApp extends StatelessWidget {
             title: 'Fox Delivery',
             themeMode: ThemeMode.light,
             theme: lightTheme,
-            home: FirstScreen(),
+            home: startWidget,
           );
         },
       ),

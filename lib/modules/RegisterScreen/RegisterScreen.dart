@@ -2,12 +2,10 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fox_delivery/modules/HomeScreen/HomeScreen.dart';
-import 'package:fox_delivery/modules/RegisterScreen/PhoneVerificationScreen.dart';
 import 'package:fox_delivery/modules/RegisterScreen/cubit/RegisterCubit.dart';
 import 'package:fox_delivery/modules/RegisterScreen/cubit/RegisterStates.dart';
 import 'package:fox_delivery/shared/components/components.dart';
 import 'package:fox_delivery/shared/constants/constants.dart';
-import 'package:fox_delivery/shared/cubit/cubit.dart';
 import 'package:fox_delivery/shared/network/local/CacheHelper.dart';
 import 'package:get/get.dart';
 
@@ -26,12 +24,12 @@ class RegisterScreen extends StatelessWidget {
       child: BlocConsumer<RegisterCubit, FoxRegisterStates>(
         listener: (context, state) {
           if (state is FoxCreateUserSuccessState) {
-            Get.snackbar('Fox Delivery', 'Created Successfully', backgroundColor: Colors.green);
+            Get.snackbar('Fox Delivery', 'Created Successfully \nPlease check your email', backgroundColor: Colors.green,colorText: Colors.white);
             CacheHelper.saveData(key: 'uId', value: state.uId);
             uId = CacheHelper.getData(key: 'uId');
-            navigateAndFinish(context: context, widget: const HomeScreen());
+            navigateAndFinish(context: context, widget: HomeScreen());
           } else if (state is FoxRegisterErrorState) {
-            Get.snackbar('Fox Delivery', 'Failed Registration', backgroundColor: Colors.red);
+            Get.snackbar('Fox Delivery', 'Failed Registration', backgroundColor: Colors.red[400], colorText: Colors.white);
             showToast(msg: state.error.toString());
           }
         },

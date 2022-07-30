@@ -48,9 +48,9 @@ Widget defaultButton({
   double height = 55,
   Color backgroundColor = Colors.blue,
   double borderRadius = 5.0,
-  String? text,
+  required String text,
   bool isUpperCase = false,
-  Color? TextColor,
+  Color TextColor = Colors.black,
   required fun,
 }) {
   return Container(
@@ -59,7 +59,7 @@ Widget defaultButton({
     child: MaterialButton(
       onPressed: fun,
       child: Text(
-        isUpperCase ? text!.toUpperCase() : text!,
+        isUpperCase ? text.toUpperCase() : text,
         style: TextStyle(
           color: TextColor,
           fontSize: 15,

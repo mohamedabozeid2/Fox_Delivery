@@ -5,5 +5,5 @@ String selectedLanguage = 'en';
 dynamic uId = "";
 FoxUserModel? userModel;
 String verificationIDReceived = '';
-
+bool onBoarding = false;
 

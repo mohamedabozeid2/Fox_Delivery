@@ -21,11 +21,14 @@ class LoginScreen extends StatelessWidget {
       create: (BuildContext context) => FoxLoginCubit(),
       child: BlocConsumer<FoxLoginCubit, FoxLoginStates>(
         listener: (context, state) {
-          if(state is FoxLoginErrorState){
-            Get.snackbar('Fox Delivery', 'Email or password is not correct', backgroundColor: Colors.red[400]);
-          }else if(state is FoxLoginSuccessState){
-            Get.snackbar('Fox Delivery', 'Login done successfully', backgroundColor: Colors.green);
-            CacheHelper.saveData(key: 'uId', value: state.uId).then((value){
+          if (state is FoxLoginErrorState) {
+            Get.snackbar('Fox Delivery', 'Email or password is not correct',
+                backgroundColor: Colors.red[400], colorText: Colors.white);
+          } else if (state is FoxLoginSuccessState) {
+            Get.snackbar('Fox Delivery', 'Login done successfully',
+                colorText: Colors.white,
+                backgroundColor: Colors.green);
+            CacheHelper.saveData(key: 'uId', value: state.uId).then((value) {
               uId = CacheHelper.getData(key: 'uId');
               navigateAndFinish(context: context, widget: HomeScreen());
             });

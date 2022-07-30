@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_zoom_drawer/config.dart';
 import 'package:fox_delivery/locale/localeController.dart';
 import 'package:fox_delivery/shared/components/components.dart';
 import 'package:fox_delivery/shared/constants/constants.dart';
@@ -9,7 +10,9 @@ import 'package:fox_delivery/styles/Themes.dart';
 import 'package:get/get.dart';
 
 class SettingScreen extends StatelessWidget {
-  const SettingScreen({Key? key}) : super(key: key);
+  final ZoomDrawerController drawerController;
+
+  SettingScreen({required this.drawerController});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +25,14 @@ class SettingScreen extends StatelessWidget {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
+              leading: IconButton(
+                icon: const Icon(
+                    Icons.menu
+                ),
+                onPressed: (){
+                  drawerController.toggle?.call();
+                },
+              ),
               centerTitle: true,
               title: Text('settings'.tr),
             ),
@@ -68,6 +79,15 @@ class SettingScreen extends StatelessWidget {
                     ],
                   ),
                   myDivider(color: Colors.grey[200]!, paddingVertical: 15),
+                  defaultButton(
+                    text: "Sign Out",
+                      fun: (){
+                    FoxCubit.get(context).signOut(context);
+                  },
+                  backgroundColor: defaultColor,
+                    width: 200,
+                    height: 100,
+                  )
                 ],
               ),
             ),

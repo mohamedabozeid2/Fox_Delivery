@@ -6,7 +6,7 @@ import 'package:fox_delivery/shared/components/components.dart';
 import 'package:fox_delivery/shared/network/local/CacheHelper.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../styles/Themes.dart';
+import '../../styles/Themes.dart';
 
 class BoardingScreen extends StatefulWidget {
   @override

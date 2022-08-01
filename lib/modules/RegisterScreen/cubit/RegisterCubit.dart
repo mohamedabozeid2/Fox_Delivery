@@ -61,7 +61,10 @@ class RegisterCubit extends Cubit<FoxRegisterStates> {
         name: name,
         phone: phone,
         uId: uId,
-        isEmailVerified: false);
+        isEmailVerified: false,
+        completedPackages: 0,
+        notCompletedPackages: 0,
+        packageNumber: 0);
     FirebaseFirestore.instance
         .collection('users')
         .doc(uId)

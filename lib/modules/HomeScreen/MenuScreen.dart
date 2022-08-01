@@ -9,11 +9,16 @@ class MenuItemDetails {
 
 class MenuItems {
   static const home = MenuItemDetails('Home', Icons.home);
+  static const contactUs = MenuItemDetails('Contact us', Icons.headphones_rounded);
+  static const aboutUs = MenuItemDetails('About us', Icons.supervised_user_circle_sharp);
   static const settings = MenuItemDetails('Settings', Icons.settings);
+
 
 
   static const menuItemList = <MenuItemDetails>[
     home,
+    contactUs,
+    aboutUs,
     settings,
   ];
 }

@@ -1,5 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fox_delivery/modules/HomeScreen/HomeScreen.dart';
 import 'package:fox_delivery/modules/RegisterScreen/cubit/RegisterCubit.dart';
@@ -7,6 +8,7 @@ import 'package:fox_delivery/modules/RegisterScreen/cubit/RegisterStates.dart';
 import 'package:fox_delivery/shared/components/components.dart';
 import 'package:fox_delivery/shared/constants/constants.dart';
 import 'package:fox_delivery/shared/network/local/CacheHelper.dart';
+import 'package:fox_delivery/styles/Themes.dart';
 import 'package:get/get.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -24,25 +26,24 @@ class RegisterScreen extends StatelessWidget {
       child: BlocConsumer<RegisterCubit, FoxRegisterStates>(
         listener: (context, state) {
           if (state is FoxCreateUserSuccessState) {
-            Get.snackbar('Fox Delivery', 'Created Successfully \nPlease check your email', backgroundColor: Colors.green,colorText: Colors.white);
+            Get.snackbar('Fox Delivery',
+                'Created Successfully \nPlease check your email',
+                backgroundColor: buttonColor, colorText: Colors.white);
             CacheHelper.saveData(key: 'uId', value: state.uId);
             uId = CacheHelper.getData(key: 'uId');
             navigateAndFinish(context: context, widget: HomeScreen());
           } else if (state is FoxRegisterErrorState) {
-            Get.snackbar('Fox Delivery', 'Failed Registration', backgroundColor: Colors.red[400], colorText: Colors.white);
+            Get.snackbar('Fox Delivery', 'Failed Registration',
+                backgroundColor: Colors.red[400], colorText: Colors.white);
             showToast(msg: state.error.toString());
           }
         },
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: Colors.white,
-            appBar: AppBar(
-              title: Text(
-                'register'.tr,
-              ),
-              centerTitle: true,
-            ),
+            appBar: AppBar(),
+            backgroundColor: secondDefaultColor,
             body: CustomScrollView(
+              physics: BouncingScrollPhysics(),
               slivers: [
                 SliverFillRemaining(
                   hasScrollBody: false,
@@ -54,11 +55,28 @@ class RegisterScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          Row(
+                            children: [
+                              Column(
+                                children: [
+                                  Text('Create Account',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .copyWith(color: Colors.white)),
+                                ],
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 50,
+                          ),
                           textFormField(
                             context: context,
                             controller: nameController,
                             label: "User Name",
                             type: TextInputType.name,
+                            style: TextStyle(color: Colors.white),
                             prefixIcon: Icons.person,
                             validation: "Name Must Not Be Empty",
                             isPassword: false,
@@ -68,6 +86,7 @@ class RegisterScreen extends StatelessWidget {
                             height: Get.height * 0.025,
                           ),
                           textFormField(
+                              style: TextStyle(color: Colors.white),
                               type: TextInputType.emailAddress,
                               controller: emailController,
                               label: "Email Address",
@@ -78,6 +97,7 @@ class RegisterScreen extends StatelessWidget {
                             height: Get.height * 0.025,
                           ),
                           textFormField(
+                              style: TextStyle(color: Colors.white),
                               type: TextInputType.streetAddress,
                               controller: addressController,
                               label: "location".tr,
@@ -88,6 +108,7 @@ class RegisterScreen extends StatelessWidget {
                             height: Get.height * 0.025,
                           ),
                           textFormField(
+                            style: TextStyle(color: Colors.white),
                             context: context,
                             controller: passwordController,
                             label: "Password",
@@ -105,6 +126,7 @@ class RegisterScreen extends StatelessWidget {
                             height: Get.height * 0.025,
                           ),
                           textFormField(
+                            style: TextStyle(color: Colors.white),
                             context: context,
                             controller: phoneController,
                             label: "Phone Number",
@@ -114,9 +136,7 @@ class RegisterScreen extends StatelessWidget {
                             isPassword: false,
                             borderRadius: 5.0,
                           ),
-                          SizedBox(
-                            height: Get.height * 0.025,
-                          ),
+                          SizedBox(height: 50),
                           ConditionalBuilder(
                               condition: state is! FoxRegisterLoadingState,
                               builder: (context) => buttonBuilder(

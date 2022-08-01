@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_zoom_drawer/config.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:fox_delivery/AboutUs/AboutUs.dart';
+import 'package:fox_delivery/ContactUs/ContactUs.dart';
 import 'package:fox_delivery/modules/HomeScreen/MainScreen.dart';
 import 'package:fox_delivery/modules/HomeScreen/MenuScreen.dart';
 import 'package:fox_delivery/modules/SettingsScreen/SettingsScreen.dart';
 import 'package:fox_delivery/shared/cubit/cubit.dart';
 import 'package:fox_delivery/shared/cubit/states.dart';
+import 'package:fox_delivery/styles/Themes.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -47,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   .size
                   .width * 0.55,
               openCurve: Curves.fastOutSlowIn,
-              menuBackgroundColor: Color(0xff274472) /*0xff5860db*/
+              menuBackgroundColor: defaultColor.withOpacity(0.4)/*Color(0xff274472)*/ /*0xff5860db*/
           );
         },
       ),
@@ -56,8 +59,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget getScreen() {
     if(currentItem == MenuItems.home){
       return MainScreen(drawerController: drawerController);
-    }else{
+    }else if(currentItem == MenuItems.settings){
       return SettingScreen(drawerController: drawerController);
+    }else if(currentItem == MenuItems.aboutUs){
+      return AboutUs(drawerController: drawerController);
+    }else{
+      return ContactUs(drawerController: drawerController);
     }
   }
 

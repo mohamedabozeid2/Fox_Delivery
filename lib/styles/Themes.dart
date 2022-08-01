@@ -3,6 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 var defaultColor = const Color(0xff5967a4);
+var secondDefaultColor = const Color(0xff0c1f40);
+var thirdDefaultColor = const Color(0xff097e76);
+var buttonColor = const Color(0xff04deab);
+var dropDownMenuColor = Colors.grey[600];
 
 // ThemeData darkTheme = ThemeData(
 //   primarySwatch: defaultBlueColor,
@@ -53,28 +57,27 @@ ThemeData lightTheme = ThemeData(
       subtitle1: TextStyle(
           fontSize: 14.0,
           fontWeight: FontWeight.w600,
-          color: defaultColor,
+          color: Colors.white,
           height: 1.3),
       bodyText2: TextStyle(
           fontSize: 20.0, fontWeight: FontWeight.w600, color: defaultColor)),
   primarySwatch: Colors.blue,
   floatingActionButtonTheme:
       FloatingActionButtonThemeData(backgroundColor: defaultColor),
-  scaffoldBackgroundColor: defaultColor,
+  scaffoldBackgroundColor: secondDefaultColor,
   appBarTheme: AppBarTheme(
     iconTheme: const IconThemeData(color: Colors.white),
     actionsIconTheme: const IconThemeData(color: Colors.white),
-    toolbarHeight: Get.height*0.1,
     titleSpacing: 20.0,
     titleTextStyle: const TextStyle(
       color: Colors.white,
-      fontSize: 30,
+      fontSize: 20,
       fontWeight: FontWeight.bold,
     ),
     elevation: 0.0,
-    backgroundColor: defaultColor,
+    backgroundColor: Colors.transparent,
     systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarColor: defaultColor,
+      statusBarColor: secondDefaultColor,
       statusBarIconBrightness: Brightness.light,
     ),
   ),

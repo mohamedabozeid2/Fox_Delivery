@@ -47,7 +47,7 @@ Widget defaultButton({
   double width = double.infinity,
   double height = 55,
   Color backgroundColor = Colors.blue,
-  double borderRadius = 5.0,
+  double borderRadius = 20.0,
   required String text,
   bool isUpperCase = false,
   Color TextColor = Colors.black,
@@ -104,8 +104,7 @@ Widget textFormField({
   IconData? suffixIcon,
   void Function()? fun,
   double borderRadius = 5.0,
-
-}){
+}) {
   return TextFormField(
     controller: controller,
     keyboardType: type,
@@ -120,22 +119,27 @@ Widget textFormField({
           label,
           style: style,
         ),
-        prefixIcon: Icon(prefixIcon, color: defaultColor,),
-        suffixIcon: IconButton(
-          onPressed:  fun,
-          icon: Icon(suffixIcon==null?suffixIcon = null: suffixIcon = suffixIcon, color: defaultColor),
+        prefixIcon: Icon(
+          prefixIcon,
+          color: defaultColor,
         ),
-        contentPadding: paddingInside != null ? EdgeInsets.symmetric(vertical: paddingInside) : null,
+        suffixIcon: IconButton(
+          onPressed: fun,
+          icon: Icon(
+              suffixIcon == null ? suffixIcon = null : suffixIcon = suffixIcon,
+              color: defaultColor),
+        ),
+        contentPadding: paddingInside != null
+            ? EdgeInsets.symmetric(vertical: paddingInside)
+            : null,
         border: OutlineInputBorder(
-          borderSide: BorderSide(
-              color: Theme.of(context!).scaffoldBackgroundColor
-          ),
+          borderSide: BorderSide(color: defaultColor),
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(borderRadius),
-          borderSide:  BorderSide(
-            color: Theme.of(context).scaffoldBackgroundColor,
+          borderSide: BorderSide(
+            color: defaultColor,
           ),
         ),
         errorBorder: OutlineInputBorder(
@@ -146,36 +150,104 @@ Widget textFormField({
         ),
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(borderRadius),
-            borderSide: BorderSide(color: Theme.of(context).scaffoldBackgroundColor))),
+            borderSide: BorderSide(color: defaultColor))),
   );
 }
+
+Widget textFormFieldWithHint({
+  required BuildContext? context,
+  required TextEditingController controller,
+  bool isPassword = false,
+  String validation = "",
+  required String label,
+  required TextInputType type,
+  TextStyle? style,
+  Widget? prefixIcon,
+  required Color borderColor,
+  double? paddingInside,
+  IconData? suffixIcon,
+  void Function()? fun,
+  double borderRadius = 5.0,
+}) {
+  return TextFormField(
+    controller: controller,
+    keyboardType: type,
+    obscureText: isPassword,
+    validator: (String? value) {
+      if (value!.isEmpty) {
+        return validation;
+      }
+    },
+    style: TextStyle(
+      color: secondDefaultColor
+    ),
+    decoration: InputDecoration(
+        fillColor: Colors.white,
+        filled: true,
+        hintText: label,
+        hintStyle: style,
+        prefixIcon: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: prefixIcon ?? prefixIcon
+        ),
+        suffixIcon: IconButton(
+          onPressed: fun,
+          icon: Icon(
+              suffixIcon == null ? suffixIcon = null : suffixIcon = suffixIcon,
+              color: defaultColor),
+        ),
+        contentPadding: paddingInside != null
+            ? EdgeInsets.symmetric(vertical: paddingInside)
+            : null,
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: borderColor),
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(borderRadius),
+          borderSide: BorderSide(
+            color: borderColor,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(borderRadius),
+          borderSide: const BorderSide(
+            color: Colors.red,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            borderSide: BorderSide(color: borderColor))),
+  );
+}
+
 
 Widget buttonBuilder({
   required fun,
   double height = 50,
   double width = double.infinity,
   double elevation = 10,
+  double fontSize = 20,
+  double borderRadius = 15,
   required String text,
   bool isUpper = false,
   Color textColor = Colors.white,
-
-}){
+}) {
   return Container(
     clipBehavior: Clip.antiAliasWithSaveLayer,
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(15),
+      borderRadius: BorderRadius.circular(borderRadius),
     ),
     child: MaterialButton(
       elevation: elevation,
-      color: defaultColor,
+      color: buttonColor,
       height: height,
       minWidth: width,
       onPressed: fun,
-      child: Text(isUpper?text.toUpperCase():text,
-        style: TextStyle(
-            color: textColor
-        ),),
+      child: Text(
+        isUpper ? text.toUpperCase() : text,
+        style: TextStyle(color: textColor, fontSize: fontSize),
+      ),
     ),
   );
-
 }

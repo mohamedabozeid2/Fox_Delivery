@@ -23,11 +23,11 @@ class SettingScreen extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: Colors.white,
+
             appBar: AppBar(
               leading: IconButton(
                 icon: const Icon(
-                    Icons.menu
+                    Icons.menu_outlined
                 ),
                 onPressed: (){
                   drawerController.toggle?.call();
@@ -50,7 +50,11 @@ class SettingScreen extends StatelessWidget {
                         child: SizedBox(
                           width: Get.width * 0.4,
                           child: DropdownButtonFormField<String>(
-                              style: Theme.of(context).textTheme.bodyText2,
+                            borderRadius: BorderRadius.circular(10),
+                              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                color: Colors.white
+
+                              ),
                               decoration: InputDecoration(
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12.0),
@@ -60,7 +64,7 @@ class SettingScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(12.0),
                                       borderSide: BorderSide(
                                           width: 2, color: defaultColor))),
-                              dropdownColor: Colors.grey[200],
+                              dropdownColor: dropDownMenuColor,
                               value: selectedLanguage,
                               items: FoxCubit.get(context)
                                   .languagesList
@@ -74,19 +78,22 @@ class SettingScreen extends StatelessWidget {
                       ),
                       Text(
                         'language'.tr,
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          color: Colors.white
+                        ),
                       )
                     ],
                   ),
-                  myDivider(color: Colors.grey[200]!, paddingVertical: 15),
+                  myDivider(color: defaultColor, paddingVertical: 15),
                   defaultButton(
+                    TextColor: Colors.white,
                     text: "Sign Out",
                       fun: (){
                     FoxCubit.get(context).signOut(context);
                   },
-                  backgroundColor: defaultColor,
-                    width: 200,
-                    height: 100,
+                  backgroundColor: buttonColor,
+                    width: 100,
+                    height: 50,
                   )
                 ],
               ),

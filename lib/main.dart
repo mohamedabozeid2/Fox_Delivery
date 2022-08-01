@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fox_delivery/locale/locale.dart';
 import 'package:fox_delivery/locale/localeController.dart';
 import 'package:fox_delivery/modules/FirstScreen/FirstScreen.dart';
+import 'package:fox_delivery/modules/HomeScreen/HomeScreen.dart';
+import 'package:fox_delivery/modules/LoginScreen/LoginScreen.dart';
 import 'package:fox_delivery/modules/SettingsScreen/SettingsScreen.dart';
 import 'package:fox_delivery/shared/BlocObserver/BlocObserver.dart';
 import 'package:fox_delivery/shared/constants/constants.dart';
@@ -13,7 +15,7 @@ import 'package:fox_delivery/shared/network/local/CacheHelper.dart';
 import 'package:fox_delivery/styles/Themes.dart';
 import 'package:get/get.dart';
 import 'firebase_options.dart';
-import 'modules/BoardingScreen.dart';
+import 'modules/BoardingScreen/BoardingScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,12 +35,21 @@ void main() async {
 
 
   Widget startWidget;
+
   if(CacheHelper.getData(key: 'onBoarding') == null){
     onBoarding = false;
-    startWidget = BoardingScreen();
   }else{
     onBoarding = true;
-    startWidget = FirstScreen();
+  }
+
+  if(onBoarding == true){
+    if(uId != null){
+      startWidget = HomeScreen();
+    }else{
+      startWidget = LoginScreen();
+    }
+  }else{
+    startWidget = BoardingScreen();
   }
   BlocOverrides.runZoned(
     () {

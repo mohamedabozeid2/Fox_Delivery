@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fox_delivery/models/PackageModel.dart';
 import 'package:fox_delivery/modules/UserPackagesDisplayScreen/PackageDetailsScreen.dart';
 import 'package:fox_delivery/shared/components/components.dart';
@@ -36,22 +37,48 @@ class _UserPackagesDisplayScreenState extends State<UserPackagesDisplayScreen> {
                 hasScrollBody: true,
                 child: Padding(
                   padding: const EdgeInsets.only(
-                      bottom: 20.0, right: 20.0, left: 20.0),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: ListView.separated(
-                            physics: BouncingScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return packageItemBuilder(userPackages[index]);
-                            },
-                            separatorBuilder: (context, index) {
-                              return myDivider(color: Colors.white);
-                            },
-                            itemCount: userPackages.length),
-                      ),
-                    ],
-                  ),
+                      bottom: 20.0, ),
+                  child: state is FoxGetUserPackagesLoadingState
+                      ? Center(child: CircularProgressIndicator())
+                      : Column(
+                          children: [
+                            userPackages.length != 0
+                                ? Expanded(
+                                    child: ListView.separated(
+                                        physics: BouncingScrollPhysics(),
+                                        itemBuilder: (context, index) {
+                                          return packageItemBuilder(
+                                              model: userPackages[index], index: index);
+                                        },
+                                        separatorBuilder: (context, index) {
+                                          return SizedBox(height: 10,);
+                                        },
+                                        itemCount: userPackages.length),
+                                  )
+                                : Expanded(
+                                  child: Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.work_off,
+                                            color: Colors.white,
+                                            size: 50.0,
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Text(
+                                            'No Packages Yet',
+                                            style: TextStyle(color: Colors.white),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                ),
+                          ],
+                        ),
                 ),
               )
             ],
@@ -61,49 +88,51 @@ class _UserPackagesDisplayScreenState extends State<UserPackagesDisplayScreen> {
     );
   }
 
-  Widget packageItemBuilder(PackageModel model) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.0),
-        color: Colors.white,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  Text(
-                    model.packageName!,
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    model.description!,
-                    style: TextStyle(
-                      fontSize: 16,
+  Widget packageItemBuilder({required PackageModel model, required int index}) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15.0),
+          color: Colors.white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                      model.packageName!,
+                      style: TextStyle(fontSize: 20),
                     ),
-                  )
-                ],
-                crossAxisAlignment: CrossAxisAlignment.start,
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(model.dateTimeDisplay!,
+                        style: Theme.of(context)
+                            .textTheme
+                            .caption!
+                            .copyWith(fontSize: 14))
+                  ],
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                ),
               ),
-            ),
-            Column(
-              children: [
-                defaultButton(
-                    text: 'Details',
-                    fun: () {
-                      navigateTo(context, PackageDetailsScreen(model: model));
-                    },
-                    width: 100,
-                    backgroundColor: thirdDefaultColor,
-                    TextColor: Colors.white)
-              ],
-            ),
-          ],
+              Column(
+                children: [
+                  defaultButton(
+                      text: 'Details',
+                      fun: () {
+                        navigateTo(context, PackageDetailsScreen(packageIndex: index));
+                      },
+                      width: 100,
+                      backgroundColor: thirdDefaultColor,
+                      TextColor: Colors.white)
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

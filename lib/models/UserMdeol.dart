@@ -1,5 +1,6 @@
 class FoxUserModel {
-  String? name;
+  String? firstName;
+  String? lastName;
   String? email;
   String? phone;
   String? uId;
@@ -9,7 +10,8 @@ class FoxUserModel {
   bool? isEmailVerified;
 
   FoxUserModel({
-    required this.name,
+    required this.firstName,
+    required this.lastName,
     required this.uId,
     required this.email,
     required this.phone,
@@ -21,7 +23,8 @@ class FoxUserModel {
 
   FoxUserModel.fromJson(Map<String, dynamic> json) {
     email = json['email'];
-    name = json['name'];
+    firstName = json['firstName'];
+    lastName = json['lastName'];
     phone = json['phone'];
     uId = json['uId'];
     isEmailVerified = json['isEmailVerified'];
@@ -32,7 +35,8 @@ class FoxUserModel {
 
   Map<String, dynamic> toMap(){
     return {
-      'name' : name,
+      'firstName' : firstName,
+      'lastName' : lastName,
       'email' : email,
       'phone' : phone,
       'uId' : uId,

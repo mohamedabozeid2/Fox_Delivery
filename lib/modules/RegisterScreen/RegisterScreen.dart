@@ -15,7 +15,8 @@ class RegisterScreen extends StatelessWidget {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   var emailController = TextEditingController();
   var addressController = TextEditingController();
-  var nameController = TextEditingController();
+  var firstNameController = TextEditingController();
+  var lastNameController = TextEditingController();
   var phoneController = TextEditingController();
   var passwordController = TextEditingController();
 
@@ -73,8 +74,22 @@ class RegisterScreen extends StatelessWidget {
                           ),
                           textFormField(
                             context: context,
-                            controller: nameController,
-                            label: "User Name",
+                            controller: firstNameController,
+                            label: "First Name",
+                            type: TextInputType.name,
+                            style: TextStyle(color: Colors.white),
+                            prefixIcon: Icons.person,
+                            validation: "Name Must Not Be Empty",
+                            isPassword: false,
+                            borderRadius: 5.0,
+                          ),
+                          SizedBox(
+                            height: Get.height * 0.025,
+                          ),
+                          textFormField(
+                            context: context,
+                            controller: lastNameController,
+                            label: "Last Name",
                             type: TextInputType.name,
                             style: TextStyle(color: Colors.white),
                             prefixIcon: Icons.person,
@@ -142,12 +157,18 @@ class RegisterScreen extends StatelessWidget {
                               builder: (context) => buttonBuilder(
                                   fun: () {
                                     if (formKey.currentState!.validate()) {
-                                      RegisterCubit.get(context).userRegister(
-                                          name: nameController.text,
-                                          email: emailController.text,
-                                          phone: phoneController.text,
-                                          password: passwordController.text,
-                                          context: context);
+                                      if(passwordController.text.length < 8){
+                                        showToast(msg: 'Password is very short',color: Colors.amber,textColor: Colors.white);
+                                      }else{
+                                        RegisterCubit.get(context).userRegister(
+                                            firstName: firstNameController.text,
+                                            lastName: lastNameController.text,
+                                            email: emailController.text,
+                                            phone: phoneController.text,
+                                            password: passwordController.text,
+                                            context: context);
+                                      }
+
                                     }
                                   },
                                   text: "register".tr,

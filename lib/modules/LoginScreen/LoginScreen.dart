@@ -10,7 +10,6 @@ import 'package:fox_delivery/shared/constants/constants.dart';
 import 'package:fox_delivery/shared/network/local/CacheHelper.dart';
 import 'package:fox_delivery/styles/Themes.dart';
 import 'package:get/get.dart';
-
 import '../../shared/components/components.dart';
 
 class LoginScreen extends StatelessWidget {

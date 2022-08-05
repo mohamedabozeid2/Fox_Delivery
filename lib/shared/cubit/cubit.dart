@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fox_delivery/models/PackageModel.dart';
 import 'package:fox_delivery/models/UserMdeol.dart';
@@ -40,22 +41,26 @@ class FoxCubit extends Cubit<FoxStates> {
     emit(FoxSignOutState());
   }
 
-  void newOrder({
-    required String packageName,
-    required String description,
-    required String fromLocation,
-    required String toLocation,
-  }) {
+  void newOrder(
+      {required String packageName,
+      required String description,
+      required String fromLocation,
+      required String toLocation,
+      required String dateTime,
+      required String dateTimeDisplay}) {
     emit(FoxNewOrderLoadingState());
     PackageModel model = PackageModel(
-        toLocation: toLocation,
-        fromLocation: fromLocation,
-        clientUid: userModel!.uId,
-        clientName: userModel!.name,
-        packageName: packageName,
-        packageId: packageIDCounter,
-        description: description,
-        status: 'New',
+      toLocation: toLocation,
+      fromLocation: fromLocation,
+      clientUid: userModel!.uId,
+      clientFirstName: userModel!.firstName,
+      clientLastName: userModel!.lastName,
+      dateTime: dateTime,
+      dateTimeDisplay: dateTimeDisplay,
+      packageName: packageName,
+      packageId: packageIDCounter,
+      description: description,
+      status: 'New',
     );
     FirebaseFirestore.instance
         .collection('packages')
@@ -69,21 +74,119 @@ class FoxCubit extends Cubit<FoxStates> {
     });
   }
 
-  void getUserPackages() {
-    emit(FoxGetUserPackagesLoadingState());
+  void getUserPackages({bool fromTrackingScreen = false, int? id}) {
     userPackages = [];
-    FirebaseFirestore.instance.collection('packages').get().then((value) {
+    packagesID = [];
+    emit(FoxGetUserPackagesLoadingState());
+    FirebaseFirestore.instance
+        .collection('packages')
+        .orderBy('dateTime', descending: false)
+        .get()
+        .then((value) {
       value.docs.forEach((element) {
-        if(element.get('clientUid') == uId){
+        if (element.get('clientUid') == uId) {
           userPackages.add(PackageModel.fromJson(element.data()));
         }
-        print('now');
+        packagesID.add(element.id);
       });
-      print(userPackages.length);
+      if (fromTrackingScreen == true) {
+        getSpecificPackage(id: id!);
+      }
       emit(FoxGetUserPackagesSuccessState());
-    }).catchError((error){
+    }).catchError((error) {
       print('Error in get user packages===> ${error.toString()}');
       emit(FoxGetUserPackagesErrorState());
     });
+  }
+
+  void deleteOrder({required String id}) {
+    FirebaseFirestore.instance
+        .collection('packages')
+        .doc(id)
+        .delete()
+        .then((value) {
+      getUserPackages();
+    });
+  }
+
+  void cancelOrder({
+    required String id,
+    required String clientFirstName,
+    required String clientLastName,
+    required String clientUid,
+    required String dateTime,
+    required String dateTimeDisplay,
+    required String description,
+    required String fromLocation,
+    required String toLocation,
+    required int packageId,
+    required String packageName,
+  }) {
+    FirebaseFirestore.instance.collection('packages').doc(id).update({
+      'clientFirstName': clientFirstName,
+      'clientLastName': clientLastName,
+      'clientUid': clientUid,
+      'dateTime': dateTime,
+      'dateTimeDisplay': dateTimeDisplay,
+      'description': description,
+      'fromLocation': fromLocation,
+      'toLocation': toLocation,
+      'packageId': packageId,
+      'packageName': packageName,
+      'status': 'Canceled',
+    }).then((value) {
+      getUserPackages();
+    }).catchError((error) {
+      print("Error while canceling order ====> ${error.toString()}");
+      emit(FoxCancelOrderErrorState());
+    });
+  }
+
+  void getPackagesNumber() {
+    FirebaseFirestore.instance.collection('packages').get().then((value) {
+      packageIDCounter = value.docs.length + 1;
+    });
+  }
+
+  bool isOwner = false;
+
+  void checkPackageOwner({required int id}) {
+    for (int i = 0; i < userPackages.length; i++) {
+      if (userPackages[i].clientUid == userModel!.uId) {
+        isOwner = true;
+      } else {
+        isOwner = false;
+      }
+    }
+  }
+
+  void getSpecificPackage({required int id}) {
+    print("Length ${userPackages.length}");
+
+    for (int i = 0; i < userPackages.length; i++) {
+      if (userPackages[i].packageId == id) {
+        if (userPackages[i].clientUid == userModel!.uId) {
+          isOwner = true;
+          if (userPackages[i].status == 'New') {
+            sliderValue = 2;
+            packageStatus = 'New';
+          } else if (userPackages[i].status == 'inProgress') {
+            sliderValue = 3;
+            packageStatus = 'In Progress';
+          } else if (userPackages[i].status == 'Completed') {
+            sliderValue = 4;
+            packageStatus = 'Completed';
+          } else {
+            sliderValue = 1;
+            packageStatus = 'Canceled';
+          }
+          break;
+        }else{
+          isOwner = false;
+          break;
+        }
+      }
+      sliderValue = 0;
+    }
   }
 }

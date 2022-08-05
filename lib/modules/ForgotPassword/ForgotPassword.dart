@@ -65,11 +65,11 @@ class ForgotPassword extends StatelessWidget {
                               text: 'Reset Password',
                               fun: () {
                                 if (formKey.currentState!.validate()) {
+                                  navigateTo(context, CheckEmailScreen());
                                   FirebaseAuth.instance
                                       .sendPasswordResetEmail(
                                           email: emailController.text)
                                       .then((value) {
-                                    navigateTo(context, CheckEmailScreen());
                                     Get.snackbar(
                                         'Fox Delivery', 'Check your email',
                                         backgroundColor: buttonColor);

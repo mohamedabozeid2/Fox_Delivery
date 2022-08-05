@@ -26,7 +26,8 @@ class RegisterCubit extends Cubit<FoxRegisterStates> {
   }
 
   void userRegister({
-    required String name,
+    required String firstName,
+    required String lastName,
     required String email,
     required String phone,
     required String password,
@@ -38,7 +39,8 @@ class RegisterCubit extends Cubit<FoxRegisterStates> {
         .then((value) {
       print(value.user!.email);
       userCreate(
-          name: name,
+          firstName: firstName,
+          lastName: lastName,
           email: email,
           phone: phone,
           uId: value.user!.uid,
@@ -50,7 +52,8 @@ class RegisterCubit extends Cubit<FoxRegisterStates> {
   }
 
   void userCreate({
-    required String name,
+    required String firstName,
+    required String lastName,
     required String email,
     required String phone,
     required String uId,
@@ -58,12 +61,14 @@ class RegisterCubit extends Cubit<FoxRegisterStates> {
   }) {
     FoxUserModel model = FoxUserModel(
         email: email,
-        name: name,
+        firstName: firstName,
+        lastName: lastName,
         phone: phone,
         uId: uId,
         isEmailVerified: false,
         completedPackages: 0,
         notCompletedPackages: 0,
+        // dateTime: DateTime.now(),
         packageNumber: 0);
     FirebaseFirestore.instance
         .collection('users')

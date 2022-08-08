@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fox_delivery/models/PackageModel.dart';
 import 'package:fox_delivery/modules/UserPackagesDisplayScreen/PackageDetailsScreen.dart';
 import 'package:fox_delivery/shared/components/components.dart';

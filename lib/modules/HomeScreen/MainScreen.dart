@@ -4,13 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_zoom_drawer/config.dart';
 import 'package:fox_delivery/modules/NewOrderScreen/NewOrderScreen.dart';
 import 'package:fox_delivery/modules/PackageTrackPage/PackageTrackPage.dart';
+import 'package:fox_delivery/modules/Services/Notifications.dart';
 import 'package:fox_delivery/modules/UserPackagesDisplayScreen/UserPackagesDisplayScreen.dart';
 import 'package:fox_delivery/shared/components/components.dart';
 import 'package:fox_delivery/shared/constants/constants.dart';
 import 'package:fox_delivery/shared/cubit/cubit.dart';
 import 'package:fox_delivery/shared/cubit/states.dart';
+import 'package:fox_delivery/shared/network/EndPoint.dart';
+import 'package:fox_delivery/shared/network/remote/Dio_Helper.dart';
 import 'package:fox_delivery/styles/Themes.dart';
-import 'package:get/get.dart';
 
 class MainScreen extends StatefulWidget {
   final ZoomDrawerController drawerController;
@@ -23,9 +25,12 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   TextEditingController packageTrackingController = TextEditingController();
+  late final LocalNotificationService service;
 
   @override
   void initState() {
+    service = LocalNotificationService();
+    service.initialize();
     FoxCubit.get(context).getUserData(userID: uId);
     super.initState();
   }
@@ -240,6 +245,30 @@ class _MainScreenState extends State<MainScreen> {
                                                 }),
                                           ],
                                         ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          buildContentItem(
+                                              context: context,
+                                              fun: () {
+                                                FoxCubit.get(context)
+                                                    .sendNotification(
+                                                        receiverToken:
+                                                            'eqH7R0XvQWqrSqZVtpnT_E:APA91bELR9MFusDUIDSnELCFoFJ5LmxHHECzblsA-QyevcCA_2JU822bCgN0JTtZzzIHrWS4EyDvvZbEN3b8ulME8PECtg54gbJAz-7oPdaD2sZbDzTN6XcM2nc2nhmzSkVm9I5xpJRp',
+                                                      title: 'Title message',
+                                                  body: 'Body Message'
+                                                );
+                                                // service.showNotification(id: 0, title: 'Notification title', body: 'body', payload: 'payload');
+                                                // Notifications.showNotification(
+                                                //   title: 'Fox Delivery',
+                                                //   payload: 'foxDelivery',
+                                                //   body: 'Fox Says Hey',
+                                                //
+                                                // );
+                                              },
+                                              icon: Icons.add_circle_outlined,
+                                              text: 'Hey')
+                                        ],
                                       )
                                     ],
                                   )

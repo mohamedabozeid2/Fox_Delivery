@@ -28,6 +28,9 @@ class _HomeScreenState extends State<HomeScreen> {
         listener: (context, state) {},
         builder: (context, state) {
           return ZoomDrawer(
+            menuScreenWidth: double.infinity,
+              mainScreenTapClose: true,
+              moveMenuScreen: true,
               style: DrawerStyle.defaultStyle,
               menuScreen: Builder(
                 builder: (context) =>

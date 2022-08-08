@@ -1,10 +1,6 @@
-import 'package:action_slider/action_slider.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fox_delivery/modules/FirstScreen/FirstScreen.dart';
 import 'package:fox_delivery/modules/HomeScreen/MainScreen.dart';
-import 'package:fox_delivery/modules/UserPackagesDisplayScreen/UserPackagesDisplayScreen.dart';
 import 'package:fox_delivery/shared/components/components.dart';
 import 'package:fox_delivery/shared/constants/constants.dart';
 import 'package:fox_delivery/shared/cubit/cubit.dart';
@@ -67,6 +63,12 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                         Expanded(
                           child: Column(
                             children: [
+                              Text('Your package ID is: $packageIDCounter', style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                color: Colors.white
+                              ),),
+                              SizedBox(
+                                height: 15,
+                              ),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10.0),
@@ -138,7 +140,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                         //     TextColor: Colors.white,
                         //     backgroundColor: buttonColor,
                         //     width: Get.width * 0.3),
-                        ConfirmationSlider(
+                        state is FoxNewOrderLoadingState ? Center(child: CircularProgressIndicator(color: thirdDefaultColor,)) : ConfirmationSlider(
                           onConfirmation: () {
                             if(formKey.currentState!.validate()){
                               FoxCubit.get(context).newOrder(

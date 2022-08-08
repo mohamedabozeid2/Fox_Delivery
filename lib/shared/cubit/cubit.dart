@@ -7,7 +7,9 @@ import 'package:fox_delivery/modules/LoginScreen/LoginScreen.dart';
 import 'package:fox_delivery/shared/components/components.dart';
 import 'package:fox_delivery/shared/constants/constants.dart';
 import 'package:fox_delivery/shared/cubit/states.dart';
+import 'package:fox_delivery/shared/network/EndPoint.dart';
 import 'package:fox_delivery/shared/network/local/CacheHelper.dart';
+import 'package:fox_delivery/shared/network/remote/Dio_Helper.dart';
 
 class FoxCubit extends Cubit<FoxStates> {
   FoxCubit() : super(FoxInitialState());
@@ -188,5 +190,46 @@ class FoxCubit extends Cubit<FoxStates> {
       }
       sliderValue = 0;
     }
+  }
+
+  void sendNotification({
+  required String receiverToken,
+    required String title,
+    required String body,
+
+}){
+    DioHelper.postData(
+        token: serverKey,
+        url: SEND_NOTIFICATION,
+        data: {
+          "to":
+          receiverToken,
+          "notification": {
+            "title":
+            title,
+            "body":
+            body,
+            "sound": "default"
+          },
+          "android": {
+            "priority": "HIGH",
+            "notification": {
+              "notification_priority":
+              "PRIORITY_MAX",
+              "sound": "default",
+              "default_sound": true,
+              "default_vibrate_timings":
+              true,
+              "default_light_settings":
+              true,
+            }
+          },
+          "date": {
+            "type": "order",
+            "id": "1",
+            "click_action":
+            "FLUTTER_NOTIFICATION_CLICK"
+          }
+        });
   }
 }

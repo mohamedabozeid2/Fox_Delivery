@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_zoom_drawer/config.dart';
@@ -12,6 +13,9 @@ import 'package:get/get.dart';
 class SettingScreen extends StatelessWidget {
   final ZoomDrawerController drawerController;
 
+  var phoneController = TextEditingController();
+  var locationController = TextEditingController();
+
   SettingScreen({required this.drawerController});
 
   @override
@@ -20,83 +24,178 @@ class SettingScreen extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) => FoxCubit(),
       child: BlocConsumer<FoxCubit, FoxStates>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if(state is FoxGetUserDataSuccessState){
+            phoneController.text = '';
+            locationController.text = '';
+          }
+        },
         builder: (context, state) {
           return Scaffold(
-
-            appBar: AppBar(
-              leading: IconButton(
-                icon: const Icon(
-                    Icons.menu_outlined
-                ),
-                onPressed: (){
-                  drawerController.toggle?.call();
-                },
-              ),
-              centerTitle: true,
-              title: Text('settings'.tr),
-            ),
-            body: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: SizedBox(
-                          width: Get.width * 0.4,
-                          child: DropdownButtonFormField<String>(
-                            borderRadius: BorderRadius.circular(10),
-                              style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                color: Colors.white
-
-                              ),
-                              decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      borderSide: BorderSide(
-                                          width: 2, color: defaultColor)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      borderSide: BorderSide(
-                                          width: 2, color: defaultColor))),
-                              dropdownColor: dropDownMenuColor,
-                              value: selectedLanguage,
-                              items: FoxCubit.get(context)
-                                  .languagesList
-                                  .map(buildMenuItem)
-                                  .toList(),
-                              onChanged: (value) {
-                                localeController.changeLanguage(
-                                    language: value!);
-                              }),
-                        ),
-                      ),
-                      Text(
-                        'language'.tr,
-                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                          color: Colors.white
-                        ),
-                      )
-                    ],
+            body: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  title: Text('settings'.tr),
+                  centerTitle: true,
+                  leading: IconButton(
+                    icon: const Icon(Icons.menu_outlined),
+                    onPressed: () {
+                      drawerController.toggle?.call();
+                    },
                   ),
-                  myDivider(color: defaultColor, paddingVertical: 15),
-                  defaultButton(
-                    TextColor: Colors.white,
-                    text: "Sign Out",
-                      fun: (){
-                    FoxCubit.get(context).signOut(context);
-                  },
-                  backgroundColor: buttonColor,
-                    width: 100,
-                    height: 50,
-                  )
-                ],
-              ),
+                ),
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              child: SizedBox(
+                                width: Get.width * 0.4,
+                                child: DropdownButtonFormField<String>(
+                                    borderRadius: BorderRadius.circular(5),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText2!
+                                        .copyWith(color: Colors.white),
+                                    decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                            borderSide: BorderSide(
+                                                width: 2, color: defaultColor)),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                            borderSide: BorderSide(
+                                                width: 2,
+                                                color: defaultColor))),
+                                    dropdownColor: dropDownMenuColor,
+                                    value: selectedLanguage,
+                                    items: FoxCubit.get(context)
+                                        .languagesList
+                                        .map(buildMenuItem)
+                                        .toList(),
+                                    onChanged: (value) {
+                                      localeController.changeLanguage(
+                                          language: value!);
+                                    }),
+                              ),
+                            ),
+                            Text(
+                              'language'.tr,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(color: Colors.white),
+                            )
+                          ],
+                        ),
+                        myDivider(color: defaultColor, paddingVertical: 15),
+                        textFormFieldWithHint(
+                            context: context,
+                            controller: phoneController,
+                            label: userModel!.phone!,
+                            prefixIcon: Icon(Icons.phone),
+                            type: TextInputType.phone,
+                            borderColor: Colors.white),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        textFormFieldWithHint(
+                            context: context,
+                            controller: locationController,
+                            label: userModel!.location!,
+                            prefixIcon: Icon(Icons.location_on),
+                            type: TextInputType.phone,
+                            borderColor: Colors.white),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: defaultButton(
+                                    text: 'Update Phone',
+                                    fun: () {
+                                      if (userModel!.phone ==
+                                          phoneController.text.trim()) {
+                                        showToast(
+                                            msg:
+                                                'You entered the old Phone number',
+                                            color: Colors.red,
+                                            textColor: Colors.white);
+                                      } else if (phoneController.text.trim() ==
+                                          '') {
+                                        showToast(
+                                            msg: 'Please enter a valid phone',
+                                            color: Colors.red,
+                                            textColor: Colors.white);
+                                      } else {
+                                        FoxCubit.get(context).updateUserPhone(
+                                          phone: phoneController.text.trim(),
+                                        );
+                                        showToast(
+                                            msg:
+                                                'Your number has been updated successfully',
+                                            color: buttonColor,
+                                            textColor: Colors.white);
+                                      }
+                                    },
+                                    backgroundColor: buttonColor,
+                                    TextColor: Colors.white,
+                                    borderRadius: 5.0)),
+                            SizedBox(
+                              width: 5.0,
+                            ),
+                            Expanded(
+                                child: defaultButton(
+                                    text: 'Update Location',
+                                    fun: () {
+                                      if (userModel!.location ==
+                                          locationController.text.trim()) {
+                                        showToast(
+                                            msg: 'You entered the old location',
+                                            textColor: Colors.white,
+                                            color: Colors.red);
+                                      } else if (locationController.text
+                                              .trim() ==
+                                          '') {
+                                        showToast(
+                                            msg:
+                                                'Please enter a valid location',
+                                            color: Colors.red,
+                                            textColor: Colors.white);
+                                      } else {
+                                        FoxCubit.get(context)
+                                            .updateUserLocation(
+                                                location: locationController
+                                                    .text
+                                                    .trim());
+                                        showToast(
+                                            msg:
+                                                'Your location has been updated successfully',
+                                            color: buttonColor,
+                                            textColor: Colors.white);
+                                      }
+                                    },
+                                    backgroundColor: buttonColor,
+                                    TextColor: Colors.white,
+                                    borderRadius: 5.0)),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
             ),
           );
         },

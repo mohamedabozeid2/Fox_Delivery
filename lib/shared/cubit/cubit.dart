@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fox_delivery/models/PackageModel.dart';
 import 'package:fox_delivery/models/UserMdeol.dart';
@@ -46,12 +47,13 @@ class FoxCubit extends Cubit<FoxStates> {
     emit(FoxSignOutState());
   }
 
-  void newOrder({required String packageName,
-    required String description,
-    required String fromLocation,
-    required String toLocation,
-    required String dateTime,
-    required String dateTimeDisplay}) {
+  void newOrder(
+      {required String packageName,
+      required String description,
+      required String fromLocation,
+      required String toLocation,
+      required String dateTime,
+      required String dateTimeDisplay}) {
     emit(FoxNewOrderLoadingState());
     PackageModel model = PackageModel(
       toLocation: toLocation,
@@ -70,8 +72,25 @@ class FoxCubit extends Cubit<FoxStates> {
         .collection('packages')
         .add(model.toMap())
         .then((value) {
-      packageIDCounter++;
-      emit(FoxNewOrderSuccessState());
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(userModel!.uId)
+          .update({
+        'firstName': userModel!.firstName,
+        'lastName': userModel!.lastName,
+        'email': userModel!.email,
+        'phone': userModel!.phone,
+        'uId': userModel!.uId,
+        'location': userModel!.location,
+        'deviceToken': userModel!.deviceToken,
+        'isEmailVerified': userModel!.isEmailVerified,
+        'completedPackages': userModel!.completedPackages,
+        'notCompletedPackages': userModel!.notCompletedPackages! + 1,
+        'packageNumber': userModel!.packageNumber! + 1,
+      }).then((value) {
+        packageIDCounter++;
+        emit(FoxNewOrderSuccessState());
+      }).catchError((error) {});
     }).catchError((error) {
       print("Error in add new order ===> ${error.toString()}");
       emit(FoxNewOrderErrorState());
@@ -130,6 +149,62 @@ class FoxCubit extends Cubit<FoxStates> {
       }
       sliderValue = 0;
     }
+  }
+
+  void updateUserPhone({
+    required String phone,
+  }) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userModel!.uId)
+        .update({
+          'firstName': userModel!.firstName,
+          'lastName': userModel!.lastName,
+          'email': userModel!.email,
+          'phone': phone,
+          'uId': userModel!.uId,
+          'location': userModel!.location,
+          'deviceToken': userModel!.deviceToken,
+          'isEmailVerified': userModel!.isEmailVerified,
+          'completedPackages': userModel!.completedPackages,
+          'notCompletedPackages': userModel!.notCompletedPackages,
+          'packageNumber': userModel!.packageNumber,
+        })
+        .then((value) {
+      getUserData(userID: userModel!.uId!);
+    })
+        .catchError((error) {
+          print("Error in update user info ${error.toString()}");
+          emit(FoxUpdateUserInfoErrorState());
+    });
+  }
+
+  void updateUserLocation({
+    required String location,
+  }) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userModel!.uId)
+        .update({
+          'firstName': userModel!.firstName,
+          'lastName': userModel!.lastName,
+          'email': userModel!.email,
+          'phone': userModel!.phone,
+          'uId': userModel!.uId,
+          'location': location,
+          'deviceToken': userModel!.deviceToken,
+          'isEmailVerified': userModel!.isEmailVerified,
+          'completedPackages': userModel!.completedPackages,
+          'notCompletedPackages': userModel!.notCompletedPackages,
+          'packageNumber': userModel!.packageNumber,
+        })
+        .then((value) {
+          getUserData(userID: userModel!.uId!);
+    })
+        .catchError((error) {
+          print("Error in update user info ${error.toString()}");
+          emit(FoxUpdateUserInfoErrorState());
+    });
   }
 
   void deleteOrder({required String id}) {
@@ -199,8 +274,6 @@ class FoxCubit extends Cubit<FoxStates> {
     }
   }
 
-
-
   void sendNotification({
     required String receiverToken,
     required String title,
@@ -224,9 +297,7 @@ class FoxCubit extends Cubit<FoxStates> {
         "id": "1",
         "click_action": "FLUTTER_NOTIFICATION_CLICK"
       }
-    }).then((value) {
-
-    }).catchError((error) {
+    }).then((value) {}).catchError((error) {
       showToast(msg: 'Notification');
       print(error.toString());
     });
@@ -237,21 +308,21 @@ class FoxCubit extends Cubit<FoxStates> {
         .collection('users')
         .doc(uId!)
         .update({
-      'email': userModel!.email,
-      'firstName': userModel!.firstName,
-      'lastName': userModel!.lastName,
-      'isEmailVerified': userModel!.isEmailVerified,
-      'completedPackages': userModel!.completedPackages,
-      'notCompletedPackages': userModel!.notCompletedPackages,
-      'packageNumber': userModel!.packageNumber,
-      'phone': userModel!.phone,
-      'uId': userModel!.uId,
-      'deviceToken': deviceToken,
-    })
+          'email': userModel!.email,
+          'firstName': userModel!.firstName,
+          'lastName': userModel!.lastName,
+          'isEmailVerified': userModel!.isEmailVerified,
+          'completedPackages': userModel!.completedPackages,
+          'notCompletedPackages': userModel!.notCompletedPackages,
+          'packageNumber': userModel!.packageNumber,
+          'phone': userModel!.phone,
+          'uId': userModel!.uId,
+          'deviceToken': deviceToken,
+        })
         .then((value) {})
         .catchError((error) {
-      print(error.toString());
-    });
+          print(error.toString());
+        });
   }
 
   void reportProblem({
@@ -262,14 +333,18 @@ class FoxCubit extends Cubit<FoxStates> {
     required String problem,
   }) {
     emit(FoxReportProblemLoadingState());
-    ProblemModel model = ProblemModel(clientUid: clientUid,
+    ProblemModel model = ProblemModel(
+        clientUid: clientUid,
         clientLastName: clientLastName,
         phoneNumber: phoneNumber,
         clientFirstName: clientFirstName,
         problem: problem);
-    FirebaseFirestore.instance.collection('problem').add(model.toMap()).then((value){
+    FirebaseFirestore.instance
+        .collection('problem')
+        .add(model.toMap())
+        .then((value) {
       emit(FoxReportProblemSuccessState());
-    }).catchError((error){
+    }).catchError((error) {
       print("Error from report problem ${error.toString()}");
       emit(FoxReportProblemErrorState());
     });

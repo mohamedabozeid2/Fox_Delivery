@@ -13,6 +13,10 @@ class FoxNewOrderLoadingState extends FoxStates{}
 class FoxNewOrderSuccessState extends FoxStates{}
 class FoxNewOrderErrorState extends FoxStates{}
 
+class FoxUpdateUserInfoLoadingState extends FoxStates{}
+class FoxUpdateUserInfoSuccessState extends FoxStates{}
+class FoxUpdateUserInfoErrorState extends FoxStates{}
+
 class FoxGetPackageNumbersLoadingState extends FoxStates{}
 class FoxGetPackageNumbersSuccessState extends FoxStates{}
 

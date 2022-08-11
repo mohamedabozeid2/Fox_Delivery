@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fox_delivery/shared/components/components.dart';
+import 'package:fox_delivery/shared/cubit/cubit.dart';
+import 'package:fox_delivery/shared/cubit/states.dart';
+import 'package:fox_delivery/styles/Themes.dart';
 
 class MenuItemDetails {
   final String title;
@@ -34,16 +39,47 @@ class MenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Column(
-          children: [
-            Spacer(),
-            ...MenuItems.menuItemList.map(buildMenuItem).toList(),
-            Spacer(
-              flex: 2,
-            )
-          ],
-        ));
+    return BlocConsumer<FoxCubit, FoxStates>(
+      listener: (context, state){},
+      builder: (context, state){
+        return SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Spacer(),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Image(image: AssetImage(
+                      'assets/images/logo.png'
+                  )),
+                ),
+                SizedBox(
+                  height: 15.0,
+                ),
+                ...MenuItems.menuItemList.map(buildMenuItem).toList(),
+                SizedBox(
+                  height: 15.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: defaultButton(
+                    TextColor: Colors.white,
+                    text: "Sign Out",
+                    fun: (){
+                      FoxCubit.get(context).signOut(context);
+                    },
+                    backgroundColor: buttonColor,
+                    width: 100,
+                    height: 50,
+                  ),
+                ),
+                Spacer(
+                  flex: 2,
+                )
+              ],
+            ));
+      },
+    );
   }
 
   Widget buildMenuItem(MenuItemDetails item) {

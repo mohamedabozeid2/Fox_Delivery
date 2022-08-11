@@ -92,22 +92,22 @@ class LoginScreen extends StatelessWidget {
                           SizedBox(
                             height: 40.0,
                           ),
-                          textFormField(
+                          textFormFieldWithHint(
                               type: TextInputType.emailAddress,
                               controller: emailController,
                               label: "email".tr,
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: defaultColor),
                               validation: 'email_validator'.tr,
-                              prefixIcon: Icons.email_outlined,
+                              prefixIcon: Icon(Icons.email_outlined, color: defaultColor),
                               context: context),
                           SizedBox(height: 15),
-                          textFormField(
+                          textFormFieldWithHint(
                               type: TextInputType.visiblePassword,
                               controller: passwordController,
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: defaultColor),
                               validation: "password_validator".tr,
                               label: "password".tr,
-                              prefixIcon: Icons.lock,
+                              prefixIcon: Icon(Icons.lock, color: defaultColor),
                               fun: () {
                                 FoxLoginCubit.get(context)
                                     .changeVisibility();
@@ -129,8 +129,8 @@ class LoginScreen extends StatelessWidget {
                               fun: () {
                                 if (formKey.currentState!.validate()) {
                                   FoxLoginCubit.get(context).userLogin(
-                                      email: emailController.text,
-                                      password: passwordController.text,
+                                      email: emailController.text.trim(),
+                                      password: passwordController.text.trim(),
                                       context: context);
                                 }
                               },

@@ -72,13 +72,13 @@ class RegisterScreen extends StatelessWidget {
                           SizedBox(
                             height: 50,
                           ),
-                          textFormField(
+                          textFormFieldWithHint(
                             context: context,
                             controller: firstNameController,
                             label: "First Name",
                             type: TextInputType.name,
-                            style: TextStyle(color: Colors.white),
-                            prefixIcon: Icons.person,
+                            style: TextStyle(color: defaultColor),
+                            prefixIcon: Icon(Icons.person, color: defaultColor),
                             validation: "Name Must Not Be Empty",
                             isPassword: false,
                             borderRadius: 5.0,
@@ -86,13 +86,13 @@ class RegisterScreen extends StatelessWidget {
                           SizedBox(
                             height: Get.height * 0.025,
                           ),
-                          textFormField(
+                          textFormFieldWithHint(
                             context: context,
                             controller: lastNameController,
                             label: "Last Name",
                             type: TextInputType.name,
-                            style: TextStyle(color: Colors.white),
-                            prefixIcon: Icons.person,
+                            style: TextStyle(color: defaultColor),
+                            prefixIcon: Icon(Icons.person, color: defaultColor),
                             validation: "Name Must Not Be Empty",
                             isPassword: false,
                             borderRadius: 5.0,
@@ -100,35 +100,35 @@ class RegisterScreen extends StatelessWidget {
                           SizedBox(
                             height: Get.height * 0.025,
                           ),
-                          textFormField(
-                              style: TextStyle(color: Colors.white),
+                          textFormFieldWithHint(
+                              style: TextStyle(color: defaultColor),
                               type: TextInputType.emailAddress,
                               controller: emailController,
                               label: "Email Address",
                               validation: "Please Enter Your Email Address",
-                              prefixIcon: Icons.email_outlined,
+                              prefixIcon: Icon(Icons.email_outlined, color: defaultColor),
                               context: context),
                           SizedBox(
                             height: Get.height * 0.025,
                           ),
-                          textFormField(
-                              style: TextStyle(color: Colors.white),
+                          textFormFieldWithHint(
+                              style: TextStyle(color: defaultColor),
                               type: TextInputType.streetAddress,
                               controller: addressController,
                               label: "location".tr,
                               validation: "Please Enter Your Email Address",
-                              prefixIcon: Icons.location_on,
+                              prefixIcon: Icon(Icons.location_on, color: defaultColor),
                               context: context),
                           SizedBox(
                             height: Get.height * 0.025,
                           ),
-                          textFormField(
-                            style: TextStyle(color: Colors.white),
+                          textFormFieldWithHint(
+                            style: TextStyle(color: defaultColor),
                             context: context,
                             controller: passwordController,
                             label: "Password",
                             type: TextInputType.visiblePassword,
-                            prefixIcon: Icons.lock,
+                            prefixIcon: Icon(Icons.lock, color: defaultColor),
                             isPassword: RegisterCubit.get(context).isPassword,
                             suffixIcon: RegisterCubit.get(context).icon,
                             fun: () {
@@ -140,13 +140,14 @@ class RegisterScreen extends StatelessWidget {
                           SizedBox(
                             height: Get.height * 0.025,
                           ),
-                          textFormField(
-                            style: TextStyle(color: Colors.white),
+                          textFormFieldWithHint(
+                            style: TextStyle(color: defaultColor),
                             context: context,
                             controller: phoneController,
                             label: "Phone Number",
                             type: TextInputType.phone,
-                            prefixIcon: Icons.phone,
+                            prefixIcon: Icon(Icons.phone, color: defaultColor),
+
                             validation: "Phone Must Not Be Empty",
                             isPassword: false,
                             borderRadius: 5.0,
@@ -157,16 +158,16 @@ class RegisterScreen extends StatelessWidget {
                               builder: (context) => buttonBuilder(
                                   fun: () {
                                     if (formKey.currentState!.validate()) {
-                                      if(passwordController.text.length < 8){
+                                      if(passwordController.text.length < 6){
                                         showToast(msg: 'Password is very short',color: Colors.amber,textColor: Colors.white);
                                       }else{
                                         RegisterCubit.get(context).userRegister(
-                                            firstName: firstNameController.text,
-                                            location: addressController.text,
-                                            lastName: lastNameController.text,
-                                            email: emailController.text,
-                                            phone: phoneController.text,
-                                            password: passwordController.text,
+                                            firstName: firstNameController.text.trim(),
+                                            location: addressController.text.trim(),
+                                            lastName: lastNameController.text.trim(),
+                                            email: emailController.text.trim(),
+                                            phone: phoneController.text.trim(),
+                                            password: passwordController.text.trim(),
                                             context: context);
                                       }
 

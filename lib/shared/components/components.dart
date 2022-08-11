@@ -115,6 +115,8 @@ Widget textFormField({
       }
     },
     decoration: InputDecoration(
+        fillColor: Colors.white,
+        filled: true,
         label: Text(
           label,
           style: style,
@@ -164,7 +166,7 @@ Widget textFormFieldWithHint({
   required TextInputType type,
   TextStyle? style,
   Widget? prefixIcon,
-  required Color borderColor,
+  Color borderColor = Colors.white,
   double? paddingInside,
   IconData? suffixIcon,
   void Function()? fun,

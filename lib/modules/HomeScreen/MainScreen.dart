@@ -4,14 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_zoom_drawer/config.dart';
 import 'package:fox_delivery/modules/NewOrderScreen/NewOrderScreen.dart';
 import 'package:fox_delivery/modules/PackageTrackPage/PackageTrackPage.dart';
+import 'package:fox_delivery/modules/ReportScreen/ReportScreen.dart';
 import 'package:fox_delivery/modules/Services/Notifications.dart';
 import 'package:fox_delivery/modules/UserPackagesDisplayScreen/UserPackagesDisplayScreen.dart';
 import 'package:fox_delivery/shared/components/components.dart';
 import 'package:fox_delivery/shared/constants/constants.dart';
 import 'package:fox_delivery/shared/cubit/cubit.dart';
 import 'package:fox_delivery/shared/cubit/states.dart';
-import 'package:fox_delivery/shared/network/EndPoint.dart';
-import 'package:fox_delivery/shared/network/remote/Dio_Helper.dart';
 import 'package:fox_delivery/styles/Themes.dart';
 
 class MainScreen extends StatefulWidget {
@@ -29,6 +28,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
+    print("deviceToken $deviceToken}");
     service = LocalNotificationService();
     service.initialize();
     FoxCubit.get(context).getUserData(userID: uId);
@@ -80,7 +80,7 @@ class _MainScreenState extends State<MainScreen> {
                                       padding: const EdgeInsets.only(
                                           left: 20.0,
                                           right: 20.0,
-                                          bottom: 0.0,
+                                          bottom: 10.0,
                                           top: 20.0),
                                       child: Column(
                                         children: [
@@ -92,7 +92,7 @@ class _MainScreenState extends State<MainScreen> {
                                                 .copyWith(color: Colors.white),
                                           ),
                                           SizedBox(
-                                            height: 15.0,
+                                            height: 20.0,
                                           ),
                                           Text(
                                             "Please enter your package ID",
@@ -200,7 +200,7 @@ class _MainScreenState extends State<MainScreen> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 20.0,
+                                    height: 35.0,
                                   ),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -221,7 +221,8 @@ class _MainScreenState extends State<MainScreen> {
                                         ],
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.all(20.0),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20.0, vertical: 15.0),
                                         child: Row(
                                           children: [
                                             buildContentItem(
@@ -246,29 +247,47 @@ class _MainScreenState extends State<MainScreen> {
                                           ],
                                         ),
                                       ),
-                                      Row(
-                                        children: [
-                                          buildContentItem(
-                                              context: context,
-                                              fun: () {
-                                                FoxCubit.get(context)
-                                                    .sendNotification(
-                                                        receiverToken:
-                                                            'eqH7R0XvQWqrSqZVtpnT_E:APA91bELR9MFusDUIDSnELCFoFJ5LmxHHECzblsA-QyevcCA_2JU822bCgN0JTtZzzIHrWS4EyDvvZbEN3b8ulME8PECtg54gbJAz-7oPdaD2sZbDzTN6XcM2nc2nhmzSkVm9I5xpJRp',
-                                                      title: 'Title message',
-                                                  body: 'Body Message'
-                                                );
-                                                // service.showNotification(id: 0, title: 'Notification title', body: 'body', payload: 'payload');
-                                                // Notifications.showNotification(
-                                                //   title: 'Fox Delivery',
-                                                //   payload: 'foxDelivery',
-                                                //   body: 'Fox Says Hey',
-                                                //
-                                                // );
-                                              },
-                                              icon: Icons.add_circle_outlined,
-                                              text: 'Hey')
-                                        ],
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20.0, vertical: 5),
+                                        child: Row(
+                                          children: [
+                                            buildContentItem(
+                                                context: context,
+                                                fun: () {
+                                                  FoxCubit.get(context)
+                                                      .sendNotification(
+                                                          receiverToken:
+                                                              deviceToken!,
+                                                          title:
+                                                              'Title message',
+                                                          body: 'Body Message');
+                                                  // service.showNotification(id: 0, title: 'Notification title', body: 'body', payload: 'payload');
+                                                  // Notifications.showNotification(
+                                                  //   title: 'Fox Delivery',
+                                                  //   payload: 'foxDelivery',
+                                                  //   body: 'Fox Says Hey',
+                                                  //
+                                                  // );
+                                                },
+                                                icon: Icons.local_offer,
+                                                text: 'Offers'),
+                                            SizedBox(
+                                              width: 20.0,
+                                            ),
+                                            buildContentItem(
+                                                context: context,
+                                                fun: () {
+                                                  navigateTo(
+                                                      context, ReportScreen());
+                                                },
+                                                icon: Icons.bug_report,
+                                                text: 'Report a problem')
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20.0,
                                       )
                                     ],
                                   )

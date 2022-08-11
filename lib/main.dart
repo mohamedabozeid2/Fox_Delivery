@@ -7,7 +7,6 @@ import 'package:fox_delivery/locale/localeController.dart';
 import 'package:fox_delivery/modules/HomeScreen/HomeScreen.dart';
 import 'package:fox_delivery/modules/LoginScreen/LoginScreen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:fox_delivery/modules/Services/Notifications.dart';
 import 'package:fox_delivery/shared/BlocObserver/BlocObserver.dart';
 import 'package:fox_delivery/shared/components/components.dart';
 import 'package:fox_delivery/shared/constants/constants.dart';
@@ -44,6 +43,8 @@ void main() async {
   //Notifications
   /////////////////////////
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  deviceToken = await messaging.getToken();
+
 
   channel = const AndroidNotificationChannel(
     'high_importance_channel', // id
@@ -73,11 +74,6 @@ void main() async {
     provisional: false,
     sound: true,
   );
-
-  print('User granted permission: ${settings.authorizationStatus}');
-
-  String? token = await messaging.getToken();
-  print("token $token");
 
 /////////////Notifications///
 

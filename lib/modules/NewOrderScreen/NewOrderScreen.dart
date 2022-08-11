@@ -50,7 +50,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
               SliverAppBar(),
               SliverFillRemaining(
                 hasScrollBody: false,
-                child: Padding(
+                child: state is FoxGetPackageNumbersLoadingState ? Center(child: CircularProgressIndicator(color: thirdDefaultColor,)) : Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Form(
                     key: formKey,

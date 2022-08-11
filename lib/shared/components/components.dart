@@ -160,6 +160,7 @@ Widget textFormFieldWithHint({
   bool isPassword = false,
   String validation = "",
   required String label,
+  iconColor = Colors.blue,
   required TextInputType type,
   TextStyle? style,
   Widget? prefixIcon,
@@ -188,7 +189,7 @@ Widget textFormFieldWithHint({
         hintStyle: style,
         prefixIcon: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: prefixIcon ?? prefixIcon
+          child: prefixIcon ?? prefixIcon,
         ),
         suffixIcon: IconButton(
           onPressed: fun,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fox_delivery/modules/UserPackagesDisplayScreen/PackageDisplayContent.dart';
 import 'package:fox_delivery/shared/constants/constants.dart';
 import 'package:fox_delivery/shared/cubit/cubit.dart';
 import 'package:fox_delivery/shared/cubit/states.dart';
@@ -39,59 +40,58 @@ class _PackageTrackPageState extends State<PackageTrackPage> {
                         child: CircularProgressIndicator(
                         color: thirdDefaultColor,
                       ))
-                    : Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          children: [
-                            sliderValue != 0
-                                ? Column(
-                                    crossAxisAlignment: sliderValue == 1
-                                        ? CrossAxisAlignment.start
-                                        : sliderValue == 2
-                                            ? CrossAxisAlignment.center
-                                            : CrossAxisAlignment.end,
-                                    children: [
-                                      Slider(
-                                        value: sliderValue,
-                                        onChanged: (_) {},
-                                        inactiveColor: sliderValue == 1 ? Colors.red : Colors.white,
-                                        activeColor: thirdDefaultColor,
-                                        max: 4,
-                                        min: 1,
-                                        thumbColor: sliderValue == 1 ? Colors.red : buttonColor,
-                                      ),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      Text(
-                                        packageStatus,
-                                        style: TextStyle(color: Colors.white),
-                                      )
-                                    ],
-                                  )
-                                : Expanded(
-                                    child: Center(
-                                        child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.broken_image,
-                                        color: thirdDefaultColor,
-                                        size: 55,
-                                      ),
-                                      SizedBox(
-                                        height: 20.0,
-                                      ),
-                                      Text(
-                                        'Package Not Found',
-                                        style:
-                                            TextStyle(color: thirdDefaultColor),
-                                      ),
-                                    ],
-                                  ))),
-                          ],
-                        ),
-                      ),
+                    : Column(
+                      children: [
+                        sliderValue != 0
+                            ? Column(
+                                crossAxisAlignment: sliderValue == 1
+                                    ? CrossAxisAlignment.start
+                                    : sliderValue == 2
+                                        ? CrossAxisAlignment.center
+                                        : CrossAxisAlignment.end,
+                                children: [
+                                  Slider(
+                                    value: sliderValue,
+                                    onChanged: (_) {},
+                                    inactiveColor: sliderValue == 1 ? Colors.red : Colors.white,
+                                    activeColor: thirdDefaultColor,
+                                    max: 4,
+                                    min: 1,
+                                    thumbColor: sliderValue == 1 ? Colors.red : buttonColor,
+                                  ),
+                                  // SizedBox(
+                                  //   height: 15,
+                                  // ),
+                                  // Text(
+                                  //   packageStatus,
+                                  //   style: TextStyle(color: Colors.white),
+                                  // ),
+                                  // myDivider(color: Colors.white, paddingVertical: 15),
+                                  PackageContent(packageIndex: widget.id-1, package: specificPackage!,)
+                                ],
+                              )
+                            : Expanded(
+                                child: Center(
+                                    child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.broken_image,
+                                    color: thirdDefaultColor,
+                                    size: 55,
+                                  ),
+                                  SizedBox(
+                                    height: 20.0,
+                                  ),
+                                  Text(
+                                    'Package Not Found',
+                                    style:
+                                        TextStyle(color: thirdDefaultColor),
+                                  ),
+                                ],
+                              ))),
+                      ],
+                    ),
               )
             ],
           ),

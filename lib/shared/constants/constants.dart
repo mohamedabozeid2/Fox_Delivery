@@ -6,6 +6,7 @@ String selectedLanguage = 'en';
 dynamic uId = "";
 FoxUserModel? userModel;
 List<PackageModel> userPackages = [];
+PackageModel? specificPackage;
 List<String> packagesID = [];
 String verificationIDReceived = '';
 bool onBoarding = false;
@@ -14,4 +15,6 @@ double sliderValue = 0;
 String packageStatus = '';
 DateTime now =  DateTime.now();
 final drawerController = ZoomDrawerController();
+
+String? deviceToken = "";
 

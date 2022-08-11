@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fox_delivery/models/PackageModel.dart';
 import 'package:fox_delivery/models/UserMdeol.dart';
+import 'package:fox_delivery/models/problemModel.dart';
 import 'package:fox_delivery/modules/LoginScreen/LoginScreen.dart';
 import 'package:fox_delivery/shared/components/components.dart';
 import 'package:fox_delivery/shared/constants/constants.dart';
@@ -29,6 +30,8 @@ class FoxCubit extends Cubit<FoxStates> {
         .get()
         .then((value) {
       userModel = FoxUserModel.fromJson(value.data()!);
+      print("FROM GET USER DATA ${value.id}");
+      updateDeviceToken();
       emit(FoxGetUserDataSuccessState());
     }).catchError((error) {
       print("Error ===> ${error.toString()}");
@@ -43,13 +46,12 @@ class FoxCubit extends Cubit<FoxStates> {
     emit(FoxSignOutState());
   }
 
-  void newOrder(
-      {required String packageName,
-      required String description,
-      required String fromLocation,
-      required String toLocation,
-      required String dateTime,
-      required String dateTimeDisplay}) {
+  void newOrder({required String packageName,
+    required String description,
+    required String fromLocation,
+    required String toLocation,
+    required String dateTime,
+    required String dateTimeDisplay}) {
     emit(FoxNewOrderLoadingState());
     PackageModel model = PackageModel(
       toLocation: toLocation,
@@ -101,17 +103,47 @@ class FoxCubit extends Cubit<FoxStates> {
     });
   }
 
+  void getSpecificPackage({required int id}) {
+    for (int i = 0; i < userPackages.length; i++) {
+      if (userPackages[i].packageId == id) {
+        if (userPackages[i].clientUid == userModel!.uId) {
+          specificPackage = userPackages[i];
+          isOwner = true;
+          if (userPackages[i].status == 'New') {
+            sliderValue = 2;
+            packageStatus = 'New';
+          } else if (userPackages[i].status == 'inProgress') {
+            sliderValue = 3;
+            packageStatus = 'In Progress';
+          } else if (userPackages[i].status == 'Completed') {
+            sliderValue = 4;
+            packageStatus = 'Completed';
+          } else {
+            sliderValue = 1;
+            packageStatus = 'Canceled';
+          }
+          break;
+        } else {
+          isOwner = false;
+          break;
+        }
+      }
+      sliderValue = 0;
+    }
+  }
+
   void deleteOrder({required String id}) {
     FirebaseFirestore.instance
         .collection('packages')
         .doc(id)
         .delete()
         .then((value) {
-      getUserPackages();
+      getUserPackages(fromTrackingScreen: true, id: int.parse(id));
     });
   }
 
   void cancelOrder({
+    required int idNumber,
     required String id,
     required String clientFirstName,
     required String clientLastName,
@@ -137,7 +169,10 @@ class FoxCubit extends Cubit<FoxStates> {
       'packageName': packageName,
       'status': 'Canceled',
     }).then((value) {
-      getUserPackages();
+      getUserPackages(id: idNumber, fromTrackingScreen: true);
+      // getUserPackages(id: id, fromTrackingScreen: true);
+      print(specificPackage!.status);
+      showToast(msg: 'The order has been canceled');
     }).catchError((error) {
       print("Error while canceling order ====> ${error.toString()}");
       emit(FoxCancelOrderErrorState());
@@ -145,8 +180,10 @@ class FoxCubit extends Cubit<FoxStates> {
   }
 
   void getPackagesNumber() {
+    emit(FoxGetPackageNumbersLoadingState());
     FirebaseFirestore.instance.collection('packages').get().then((value) {
       packageIDCounter = value.docs.length + 1;
+      emit(FoxGetPackageNumbersSuccessState());
     });
   }
 
@@ -162,74 +199,79 @@ class FoxCubit extends Cubit<FoxStates> {
     }
   }
 
-  void getSpecificPackage({required int id}) {
-    print("Length ${userPackages.length}");
 
-    for (int i = 0; i < userPackages.length; i++) {
-      if (userPackages[i].packageId == id) {
-        if (userPackages[i].clientUid == userModel!.uId) {
-          isOwner = true;
-          if (userPackages[i].status == 'New') {
-            sliderValue = 2;
-            packageStatus = 'New';
-          } else if (userPackages[i].status == 'inProgress') {
-            sliderValue = 3;
-            packageStatus = 'In Progress';
-          } else if (userPackages[i].status == 'Completed') {
-            sliderValue = 4;
-            packageStatus = 'Completed';
-          } else {
-            sliderValue = 1;
-            packageStatus = 'Canceled';
-          }
-          break;
-        }else{
-          isOwner = false;
-          break;
-        }
-      }
-      sliderValue = 0;
-    }
-  }
 
   void sendNotification({
-  required String receiverToken,
+    required String receiverToken,
     required String title,
     required String body,
+  }) {
+    DioHelper.postData(token: serverKey, url: SEND_NOTIFICATION, data: {
+      "to": receiverToken,
+      "notification": {"title": title, "body": body, "sound": "default"},
+      "android": {
+        "priority": "HIGH",
+        "notification": {
+          "notification_priority": "PRIORITY_MAX",
+          "sound": "default",
+          "default_sound": true,
+          "default_vibrate_timings": true,
+          "default_light_settings": true,
+        }
+      },
+      "date": {
+        "type": "order",
+        "id": "1",
+        "click_action": "FLUTTER_NOTIFICATION_CLICK"
+      }
+    }).then((value) {
 
-}){
-    DioHelper.postData(
-        token: serverKey,
-        url: SEND_NOTIFICATION,
-        data: {
-          "to":
-          receiverToken,
-          "notification": {
-            "title":
-            title,
-            "body":
-            body,
-            "sound": "default"
-          },
-          "android": {
-            "priority": "HIGH",
-            "notification": {
-              "notification_priority":
-              "PRIORITY_MAX",
-              "sound": "default",
-              "default_sound": true,
-              "default_vibrate_timings":
-              true,
-              "default_light_settings":
-              true,
-            }
-          },
-          "date": {
-            "type": "order",
-            "id": "1",
-            "click_action":
-            "FLUTTER_NOTIFICATION_CLICK"
-          }
-        });
+    }).catchError((error) {
+      showToast(msg: 'Notification');
+      print(error.toString());
+    });
+  }
+
+  void updateDeviceToken() {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId!)
+        .update({
+      'email': userModel!.email,
+      'firstName': userModel!.firstName,
+      'lastName': userModel!.lastName,
+      'isEmailVerified': userModel!.isEmailVerified,
+      'completedPackages': userModel!.completedPackages,
+      'notCompletedPackages': userModel!.notCompletedPackages,
+      'packageNumber': userModel!.packageNumber,
+      'phone': userModel!.phone,
+      'uId': userModel!.uId,
+      'deviceToken': deviceToken,
+    })
+        .then((value) {})
+        .catchError((error) {
+      print(error.toString());
+    });
+  }
+
+  void reportProblem({
+    required String clientUid,
+    required String clientLastName,
+    required String clientFirstName,
+    required String phoneNumber,
+    required String problem,
+  }) {
+    emit(FoxReportProblemLoadingState());
+    ProblemModel model = ProblemModel(clientUid: clientUid,
+        clientLastName: clientLastName,
+        phoneNumber: phoneNumber,
+        clientFirstName: clientFirstName,
+        problem: problem);
+    FirebaseFirestore.instance.collection('problem').add(model.toMap()).then((value){
+      emit(FoxReportProblemSuccessState());
+    }).catchError((error){
+      print("Error from report problem ${error.toString()}");
+      emit(FoxReportProblemErrorState());
+    });
   }
 }

@@ -30,6 +30,7 @@ class RegisterCubit extends Cubit<FoxRegisterStates> {
     required String lastName,
     required String email,
     required String phone,
+    required String location,
     required String password,
     required BuildContext context,
   }) {
@@ -43,6 +44,7 @@ class RegisterCubit extends Cubit<FoxRegisterStates> {
           lastName: lastName,
           email: email,
           phone: phone,
+          location: location,
           uId: value.user!.uid,
           context: context);
     }).catchError((error) {
@@ -55,6 +57,7 @@ class RegisterCubit extends Cubit<FoxRegisterStates> {
     required String firstName,
     required String lastName,
     required String email,
+    required String location,
     required String phone,
     required String uId,
     required BuildContext context,
@@ -63,6 +66,8 @@ class RegisterCubit extends Cubit<FoxRegisterStates> {
         email: email,
         firstName: firstName,
         lastName: lastName,
+        location: location,
+        deviceToken: deviceToken,
         phone: phone,
         uId: uId,
         isEmailVerified: false,

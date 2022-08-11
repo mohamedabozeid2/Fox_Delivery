@@ -123,7 +123,7 @@ class _UserPackagesDisplayScreenState extends State<UserPackagesDisplayScreen> {
                   defaultButton(
                       text: 'Details',
                       fun: () {
-                        navigateTo(context, PackageDetailsScreen(packageIndex: index));
+                        navigateTo(context, PackageDetailsScreen(packageIndex: index, package: userPackages[index],));
                       },
                       width: 100,
                       backgroundColor: thirdDefaultColor,

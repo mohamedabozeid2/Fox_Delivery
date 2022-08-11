@@ -162,6 +162,7 @@ class RegisterScreen extends StatelessWidget {
                                       }else{
                                         RegisterCubit.get(context).userRegister(
                                             firstName: firstNameController.text,
+                                            location: addressController.text,
                                             lastName: lastNameController.text,
                                             email: emailController.text,
                                             phone: phoneController.text,

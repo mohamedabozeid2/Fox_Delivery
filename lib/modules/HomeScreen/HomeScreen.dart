@@ -7,6 +7,7 @@ import 'package:fox_delivery/modules/ContactUs/ContactUs.dart';
 import 'package:fox_delivery/modules/HomeScreen/MainScreen.dart';
 import 'package:fox_delivery/modules/HomeScreen/MenuScreen.dart';
 import 'package:fox_delivery/modules/SettingsScreen/SettingsScreen.dart';
+import 'package:fox_delivery/shared/constants/constants.dart';
 import 'package:fox_delivery/shared/cubit/cubit.dart';
 import 'package:fox_delivery/shared/cubit/states.dart';
 import 'package:fox_delivery/styles/Themes.dart';
@@ -23,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => FoxCubit(),
+      create: (BuildContext context) => FoxCubit()..getPackagesNumber()..getUserPackages()/*..getUserData(userID: userModel!.uId!)*/,
       child: BlocConsumer<FoxCubit, FoxStates>(
         listener: (context, state) {},
         builder: (context, state) {

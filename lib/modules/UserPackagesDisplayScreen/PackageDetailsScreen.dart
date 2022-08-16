@@ -15,7 +15,9 @@ class PackageDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<FoxCubit, FoxStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if(state is FoxGetUserPackagesSuccessState){}
+      },
       builder: (context, state) {
         return Scaffold(
             backgroundColor: thirdDefaultColor,
@@ -26,13 +28,20 @@ class PackageDetailsScreen extends StatelessWidget {
                 ),
                 SliverFillRemaining(
                   hasScrollBody: false,
-                  child: PackageContent(
-                    package: package,
-                    packageIndex: packageIndex,
-                  ),
+                  child: state is FoxGetUserPackagesLoadingState
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                        )
+                      : PackageContent(
+                          fromTracking: false,
+                          package: package,
+                          packageIndex: packageIndex,
+                        ),
                 )
               ],
-                ));
+            ));
       },
     );
   }

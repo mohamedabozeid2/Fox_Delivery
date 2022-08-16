@@ -18,16 +18,20 @@ class PackageTrackPage extends StatefulWidget {
 class _PackageTrackPageState extends State<PackageTrackPage> {
   @override
   void initState() {
-    FoxCubit.get(context)
-        .getUserPackages(id: widget.id, fromTrackingScreen: true);
-
+    // FoxCubit.get(context)
+    //     .getUserPackages(id: widget.id, fromTrackingScreen: true);
+    FoxCubit.get(context).getSpecificPackage(id: widget.id);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<FoxCubit, FoxStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if(state is FoxGetSpecificPackageSuccessState){
+          FoxCubit.get(context).getUserPackages(fromTracking: true);
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           body: CustomScrollView(
@@ -35,10 +39,10 @@ class _PackageTrackPageState extends State<PackageTrackPage> {
               SliverAppBar(),
               SliverFillRemaining(
                 hasScrollBody: false,
-                child: state is FoxGetUserPackagesLoadingState
+                child: state is FoxGetSpecificPackageLoadingState
                     ? Center(
                         child: CircularProgressIndicator(
-                        color: thirdDefaultColor,
+                        color: Colors.white,
                       ))
                     : Column(
                       children: [
@@ -67,7 +71,7 @@ class _PackageTrackPageState extends State<PackageTrackPage> {
                                   //   style: TextStyle(color: Colors.white),
                                   // ),
                                   // myDivider(color: Colors.white, paddingVertical: 15),
-                                  PackageContent(packageIndex: widget.id-1, package: specificPackage!,)
+                                  PackageContent(fromTracking: true,packageIndex: widget.id-1, package: specificPackage!,)
                                 ],
                               )
                             : Expanded(

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fox_delivery/models/PackageModel.dart';
 import 'package:fox_delivery/models/UserMdeol.dart';
@@ -89,6 +90,7 @@ class FoxCubit extends Cubit<FoxStates> {
         'packageNumber': userModel!.packageNumber! + 1,
       }).then((value) {
         packageIDCounter++;
+        getUserPackages();
         emit(FoxNewOrderSuccessState());
       }).catchError((error) {});
     }).catchError((error) {
@@ -97,10 +99,14 @@ class FoxCubit extends Cubit<FoxStates> {
     });
   }
 
-  void getUserPackages({bool fromTrackingScreen = false, int? id}) {
+  void getUserPackages(
+      {bool fromTracking =
+          false} /*{bool fromTrackingScreen = false, int? id}*/) {
     userPackages = [];
     packagesID = [];
-    emit(FoxGetUserPackagesLoadingState());
+    if (fromTracking == false) {
+      emit(FoxGetUserPackagesLoadingState());
+    }
     FirebaseFirestore.instance
         .collection('packages')
         .orderBy('dateTime', descending: false)
@@ -112,10 +118,13 @@ class FoxCubit extends Cubit<FoxStates> {
         }
         packagesID.add(element.id);
       });
-      if (fromTrackingScreen == true) {
-        getSpecificPackage(id: id!);
+      // if (fromTrackingScreen == true) {
+      //
+      //   getSpecificPackage(id: id!);
+      // }
+      if (fromTracking == false) {
+        emit(FoxGetUserPackagesSuccessState());
       }
-      emit(FoxGetUserPackagesSuccessState());
     }).catchError((error) {
       print('Error in get user packages===> ${error.toString()}');
       emit(FoxGetUserPackagesErrorState());
@@ -123,6 +132,7 @@ class FoxCubit extends Cubit<FoxStates> {
   }
 
   void getSpecificPackage({required int id}) {
+    emit(FoxGetSpecificPackageLoadingState());
     for (int i = 0; i < userPackages.length; i++) {
       if (userPackages[i].packageId == id) {
         if (userPackages[i].clientUid == userModel!.uId) {
@@ -149,75 +159,68 @@ class FoxCubit extends Cubit<FoxStates> {
       }
       sliderValue = 0;
     }
+    emit(FoxGetSpecificPackageSuccessState());
   }
 
   void updateUserPhone({
     required String phone,
   }) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(userModel!.uId)
-        .update({
-          'firstName': userModel!.firstName,
-          'lastName': userModel!.lastName,
-          'email': userModel!.email,
-          'phone': phone,
-          'uId': userModel!.uId,
-          'location': userModel!.location,
-          'deviceToken': userModel!.deviceToken,
-          'isEmailVerified': userModel!.isEmailVerified,
-          'completedPackages': userModel!.completedPackages,
-          'notCompletedPackages': userModel!.notCompletedPackages,
-          'packageNumber': userModel!.packageNumber,
-        })
-        .then((value) {
+    FirebaseFirestore.instance.collection('users').doc(userModel!.uId).update({
+      'firstName': userModel!.firstName,
+      'lastName': userModel!.lastName,
+      'email': userModel!.email,
+      'phone': phone,
+      'uId': userModel!.uId,
+      'location': userModel!.location,
+      'deviceToken': userModel!.deviceToken,
+      'isEmailVerified': userModel!.isEmailVerified,
+      'completedPackages': userModel!.completedPackages,
+      'notCompletedPackages': userModel!.notCompletedPackages,
+      'packageNumber': userModel!.packageNumber,
+    }).then((value) {
       getUserData(userID: userModel!.uId!);
-    })
-        .catchError((error) {
-          print("Error in update user info ${error.toString()}");
-          emit(FoxUpdateUserInfoErrorState());
+    }).catchError((error) {
+      print("Error in update user info ${error.toString()}");
+      emit(FoxUpdateUserInfoErrorState());
     });
   }
 
   void updateUserLocation({
     required String location,
   }) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(userModel!.uId)
-        .update({
-          'firstName': userModel!.firstName,
-          'lastName': userModel!.lastName,
-          'email': userModel!.email,
-          'phone': userModel!.phone,
-          'uId': userModel!.uId,
-          'location': location,
-          'deviceToken': userModel!.deviceToken,
-          'isEmailVerified': userModel!.isEmailVerified,
-          'completedPackages': userModel!.completedPackages,
-          'notCompletedPackages': userModel!.notCompletedPackages,
-          'packageNumber': userModel!.packageNumber,
-        })
-        .then((value) {
-          getUserData(userID: userModel!.uId!);
-    })
-        .catchError((error) {
-          print("Error in update user info ${error.toString()}");
-          emit(FoxUpdateUserInfoErrorState());
+    FirebaseFirestore.instance.collection('users').doc(userModel!.uId).update({
+      'firstName': userModel!.firstName,
+      'lastName': userModel!.lastName,
+      'email': userModel!.email,
+      'phone': userModel!.phone,
+      'uId': userModel!.uId,
+      'location': location,
+      'deviceToken': userModel!.deviceToken,
+      'isEmailVerified': userModel!.isEmailVerified,
+      'completedPackages': userModel!.completedPackages,
+      'notCompletedPackages': userModel!.notCompletedPackages,
+      'packageNumber': userModel!.packageNumber,
+    }).then((value) {
+      getUserData(userID: userModel!.uId!);
+    }).catchError((error) {
+      print("Error in update user info ${error.toString()}");
+      emit(FoxUpdateUserInfoErrorState());
     });
   }
 
-  void deleteOrder({required String id}) {
-    FirebaseFirestore.instance
-        .collection('packages')
-        .doc(id)
-        .delete()
-        .then((value) {
-      getUserPackages(fromTrackingScreen: true, id: int.parse(id));
-    });
-  }
+  // void deleteOrder({required String id}) {
+  //   FirebaseFirestore.instance
+  //       .collection('packages')
+  //       .doc(id)
+  //       .delete()
+  //       .then((value) {
+  //     getUserPackages(fromTrackingScreen: true, id: int.parse(id));
+  //   });
+  // }
 
   void cancelOrder({
+    required bool fromTracking,
+    required BuildContext context,
     required int idNumber,
     required String id,
     required String clientFirstName,
@@ -244,9 +247,14 @@ class FoxCubit extends Cubit<FoxStates> {
       'packageName': packageName,
       'status': 'Canceled',
     }).then((value) {
-      getUserPackages(id: idNumber, fromTrackingScreen: true);
-      // getUserPackages(id: id, fromTrackingScreen: true);
-      print(specificPackage!.status);
+      Navigator.pop(context);
+      getUserPackages(/*id: idNumber, fromTrackingScreen: true*/);
+
+      // if(fromTracking == false){
+      //   getUserPackages(/*id: idNumber, fromTrackingScreen: true*/);
+      // }else{
+      //   getSpecificPackage(id: idNumber);
+      // }
       showToast(msg: 'The order has been canceled');
     }).catchError((error) {
       print("Error while canceling order ====> ${error.toString()}");

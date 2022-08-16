@@ -24,6 +24,10 @@ class FoxGetUserPackagesLoadingState extends FoxStates{}
 class FoxGetUserPackagesSuccessState extends FoxStates{}
 class FoxGetUserPackagesErrorState extends FoxStates{}
 
+class FoxGetSpecificPackageLoadingState extends FoxStates{}
+class FoxGetSpecificPackageSuccessState extends FoxStates{}
+class FoxGetSpecificPackageErrorState extends FoxStates{}
+
 class FoxCancelOrderLoadingState extends FoxStates{}
 class FoxCancelOrderSuccessState extends FoxStates{}
 class FoxCancelOrderErrorState extends FoxStates{}

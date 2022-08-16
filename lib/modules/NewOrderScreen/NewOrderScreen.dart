@@ -18,7 +18,7 @@ class NewOrderScreen extends StatefulWidget {
 class _NewOrderScreenState extends State<NewOrderScreen> {
   @override
   void initState() {
-    FoxCubit.get(context).getPackagesNumber();
+    // FoxCubit.get(context).getPackagesNumber();
     super.initState();
   }
 

@@ -17,7 +17,7 @@ class UserPackagesDisplayScreen extends StatefulWidget {
 class _UserPackagesDisplayScreenState extends State<UserPackagesDisplayScreen> {
   @override
   void initState() {
-    FoxCubit.get(context).getUserPackages();
+    // FoxCubit.get(context).getUserPackages();
     super.initState();
   }
 

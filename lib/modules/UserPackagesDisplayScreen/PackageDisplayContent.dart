@@ -10,221 +10,224 @@ import 'package:get/get.dart';
 import '../../shared/constants/constants.dart';
 
 class PackageContent extends StatelessWidget {
+  final bool fromTracking;
   final int packageIndex;
   PackageModel package;
 
-  PackageContent({required this.package, required this.packageIndex});
+  PackageContent(
+      {required this.package,
+      required this.packageIndex,
+      required this.fromTracking});
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<FoxCubit, FoxStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+
+      },
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 20.0),
-          child: state is FoxGetUserPackagesLoadingState
-              ? Center(child: CircularProgressIndicator())
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: Get.height * 0.30,
+                decoration: BoxDecoration(color: thirdDefaultColor),
+                child: Stack(
                   children: [
                     Container(
-                      height: Get.height * 0.30,
-                      decoration: BoxDecoration(color: thirdDefaultColor),
-                      child: Stack(
-                        children: [
-                          Container(
-                            height: Get.height * 0.20,
-                            color: secondDefaultColor,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Container(
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 50,
-                                        backgroundColor: secondDefaultColor,
-                                        backgroundImage: AssetImage(
-                                            'assets/images/package3.png'),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            // userPackages[packageIndex]
-                                            package.clientFirstName!,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2!
-                                                .copyWith(
-                                                    color: secondDefaultColor),
-                                          ),
-                                          Text(
-                                            package
-                                                // userPackages[packageIndex]
-                                                .clientLastName!,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2!
-                                                .copyWith(
-                                                    color: secondDefaultColor),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 10.0,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Package ID :',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2!
-                                                .copyWith(
-                                                    color: secondDefaultColor,
-                                                    fontSize: 16),
-                                          ),
-                                          Text(
-                                            ' ${
-                                            // userPackages[packageIndex]
-                                            package.packageId!}',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2!
-                                                .copyWith(
-                                                    color: secondDefaultColor,
-                                                    fontSize: 16),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                height: Get.height * 0.25,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+                      height: Get.height * 0.20,
+                      color: secondDefaultColor,
                     ),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: thirdDefaultColor,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Table(
-                              textBaseline: TextBaseline.alphabetic,
-                              border: TableBorder.symmetric(
-                                  inside: BorderSide(color: Colors.white)),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                buildTableRow('Package ID: ',
-                                    "${/*userPackages[packageIndex]*/ package.packageId}"),
-                                buildTableRow('Client Name: ',
-                                    "${/*userPackages[packageIndex]*/package.clientFirstName} ${/*userPackages[packageIndex]*/package.clientLastName}"),
-                                buildTableRow('Package Name: ',
-                                    "${/*userPackages[packageIndex]*/package.packageName}"),
-                                buildTableRow('Package Description: ',
-                                    "${/*userPackages[packageIndex]*/package.description}"),
-                                buildTableRow('Package From: ',
-                                    "${/*userPackages[packageIndex]*/package.fromLocation}"),
-                                buildTableRow('Package To: ',
-                                    "${/*userPackages[packageIndex]*/package.toLocation}"),
-                                buildTableRow('Order Time: ',
-                                    "${/*userPackages[packageIndex]*/package.dateTimeDisplay}"),
-                                buildTableRow('Status ',
-                                    "${/*userPackages[packageIndex]*/package.status}"),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: defaultButton(
-                                      text: 'Ok!',
-                                      fun: () {
-                                        Navigator.pop(context);
-                                      },
-                                      borderRadius: 15,
-                                      TextColor: Colors.white,
-                                      backgroundColor: buttonColor),
-                                ),
-                                if (/*userPackages[packageIndex]*/package.status == 'New')
-                                  SizedBox(
-                                    width: 10,
+                                  CircleAvatar(
+                                    radius: 50,
+                                    backgroundColor: secondDefaultColor,
+                                    backgroundImage:
+                                        AssetImage('assets/images/package3.png'),
                                   ),
-                                if (/*userPackages[packageIndex]*/package.status == 'New')
-                                  Expanded(
-                                    child: defaultButton(
-                                        text: 'Cancel Order',
-                                        fun: () {
-                                          FoxCubit.get(context).cancelOrder(
-                                            idNumber: packageIndex,
-                                              id: packagesID[packageIndex],
-                                              clientFirstName: /*userPackages[packageIndex]*/package
-                                                  .clientFirstName!,
-                                              clientLastName:
-                                              /*userPackages[packageIndex]*/package
-                                                      .clientLastName!,
-                                              clientUid:
-                                              /*userPackages[packageIndex]*/package
-                                                      .clientUid!,
-                                              dateTime: /*userPackages[packageIndex]*/package
-                                                  .dateTime!,
-                                              dateTimeDisplay:
-                                                  /*userPackages[packageIndex]*/package
-                                                      .dateTimeDisplay!,
-                                              description:
-                                                  /*userPackages[packageIndex]*/package
-                                                      .description!,
-                                              fromLocation:
-                                                  /*userPackages[packageIndex]*/package
-                                                      .fromLocation!,
-                                              toLocation:
-                                                  /*userPackages[packageIndex]*/package
-                                                      .toLocation!,
-                                              packageId:
-                                                  /*userPackages[packageIndex]*/package
-                                                      .packageId!,
-                                              packageName:
-                                                  /*userPackages[packageIndex]*/package
-                                                      .packageName!);
-                                        },
-                                        backgroundColor: Colors.amber,
-                                        TextColor: Colors.white),
-                                  )
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      // userPackages[packageIndex]
+                                      package.clientFirstName!,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2!
+                                          .copyWith(color: secondDefaultColor),
+                                    ),
+                                    Text(
+                                      package
+                                          // userPackages[packageIndex]
+                                          .clientLastName!,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2!
+                                          .copyWith(color: secondDefaultColor),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Package ID :',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2!
+                                          .copyWith(
+                                              color: secondDefaultColor,
+                                              fontSize: 16),
+                                    ),
+                                    Text(
+                                      ' ${
+                                      // userPackages[packageIndex]
+                                      package.packageId!}',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2!
+                                          .copyWith(
+                                              color: secondDefaultColor,
+                                              fontSize: 16),
+                                    ),
+                                  ],
+                                )
                               ],
                             ),
-                          ],
+                          ),
+                          height: Get.height * 0.25,
                         ),
                       ),
                     )
                   ],
                 ),
+              ),
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: thirdDefaultColor,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Table(
+                        textBaseline: TextBaseline.alphabetic,
+                        border: TableBorder.symmetric(
+                            inside: BorderSide(color: Colors.white)),
+                        children: [
+                          buildTableRow('Package ID: ',
+                              "${/*userPackages[packageIndex]*/ package.packageId}"),
+                          buildTableRow('Client Name: ',
+                              "${/*userPackages[packageIndex]*/ package.clientFirstName} ${/*userPackages[packageIndex]*/ package.clientLastName}"),
+                          buildTableRow('Package Name: ',
+                              "${/*userPackages[packageIndex]*/ package.packageName}"),
+                          buildTableRow('Package Description: ',
+                              "${/*userPackages[packageIndex]*/ package.description}"),
+                          buildTableRow('Package From: ',
+                              "${/*userPackages[packageIndex]*/ package.fromLocation}"),
+                          buildTableRow('Package To: ',
+                              "${/*userPackages[packageIndex]*/ package.toLocation}"),
+                          buildTableRow('Order Time: ',
+                              "${/*userPackages[packageIndex]*/ package.dateTimeDisplay}"),
+                          buildTableRow('Status ',
+                              "${/*userPackages[packageIndex]*/ package.status}"),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: defaultButton(
+                                text: 'Ok!',
+                                fun: () {
+                                  Navigator.pop(context);
+                                },
+                                borderRadius: 15,
+                                TextColor: Colors.white,
+                                backgroundColor: buttonColor),
+                          ),
+                          if (/*userPackages[packageIndex]*/ package.status ==
+                              'New')
+                            SizedBox(
+                              width: 10,
+                            ),
+                          if (/*userPackages[packageIndex]*/ package.status ==
+                              'New')
+                            Expanded(
+                              child: defaultButton(
+                                  text: 'Cancel Order',
+                                  fun: () {
+                                    FoxCubit.get(context).cancelOrder(
+                                        fromTracking: fromTracking,
+                                        context: context,
+                                        idNumber: packageIndex,
+                                        id: packagesID[packageIndex],
+                                        clientFirstName: /*userPackages[packageIndex]*/ package
+                                            .clientFirstName!,
+                                        clientLastName:
+                                            /*userPackages[packageIndex]*/ package
+                                                .clientLastName!,
+                                        clientUid:
+                                            /*userPackages[packageIndex]*/ package
+                                                .clientUid!,
+                                        dateTime: /*userPackages[packageIndex]*/ package
+                                            .dateTime!,
+                                        dateTimeDisplay:
+                                            /*userPackages[packageIndex]*/ package
+                                                .dateTimeDisplay!,
+                                        description:
+                                            /*userPackages[packageIndex]*/ package
+                                                .description!,
+                                        fromLocation:
+                                            /*userPackages[packageIndex]*/ package
+                                                .fromLocation!,
+                                        toLocation:
+                                            /*userPackages[packageIndex]*/ package
+                                                .toLocation!,
+                                        packageId:
+                                            /*userPackages[packageIndex]*/ package
+                                                .packageId!,
+                                        packageName:
+                                            /*userPackages[packageIndex]*/ package
+                                                .packageName!);
+                                  },
+                                  backgroundColor: Colors.amber,
+                                  TextColor: Colors.white),
+                            )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         );
       },
     );

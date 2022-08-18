@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fox_delivery/modules/ReportScreen/ReportSuccess.dart';
@@ -7,6 +6,7 @@ import 'package:fox_delivery/shared/constants/constants.dart';
 import 'package:fox_delivery/shared/cubit/cubit.dart';
 import 'package:fox_delivery/shared/cubit/states.dart';
 import 'package:fox_delivery/styles/Themes.dart';
+import 'package:get/get.dart';
 
 class ReportScreen extends StatelessWidget {
   var problemController = TextEditingController();
@@ -33,7 +33,7 @@ class ReportScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          'What is your problem?',
+                          'what_is_your_problem'.tr,
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
@@ -45,7 +45,7 @@ class ReportScreen extends StatelessWidget {
                         textFormFieldWithHint(
                             context: context,
                             controller: problemController,
-                            label: 'Problem',
+                            label: 'problem'.tr,
                             type: TextInputType.text,
                             borderRadius: 5.0,
                             borderColor: Colors.transparent),
@@ -58,7 +58,7 @@ class ReportScreen extends StatelessWidget {
                                 color: buttonColor,
                               ))
                             : defaultButton(
-                                text: 'Report',
+                                text: 'report'.tr,
                                 borderRadius: 5.0,
                                 fun: () {
                                   FoxCubit.get(context).reportProblem(

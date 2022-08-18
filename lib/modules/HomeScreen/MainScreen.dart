@@ -11,7 +11,9 @@ import 'package:fox_delivery/shared/components/components.dart';
 import 'package:fox_delivery/shared/constants/constants.dart';
 import 'package:fox_delivery/shared/cubit/cubit.dart';
 import 'package:fox_delivery/shared/cubit/states.dart';
+import 'package:fox_delivery/shared/network/local/CacheHelper.dart';
 import 'package:fox_delivery/styles/Themes.dart';
+import 'package:get/get.dart';
 
 class MainScreen extends StatefulWidget {
   final ZoomDrawerController drawerController;
@@ -28,10 +30,8 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    print("deviceToken $deviceToken}");
     service = LocalNotificationService();
     service.initialize();
-    FoxCubit.get(context).getUserData(userID: uId);
     super.initState();
   }
 
@@ -85,7 +85,7 @@ class _MainScreenState extends State<MainScreen> {
                                       child: Column(
                                         children: [
                                           Text(
-                                            'Tracking Your Package',
+                                            'tracking_your_package'.tr,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodyText1!
@@ -95,7 +95,7 @@ class _MainScreenState extends State<MainScreen> {
                                             height: 20.0,
                                           ),
                                           Text(
-                                            "Please enter your package ID",
+                                            "please_enter_your_package_id".tr,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .caption!
@@ -116,13 +116,13 @@ class _MainScreenState extends State<MainScreen> {
                                                     borderColor: Colors.white,
                                                     controller:
                                                         packageTrackingController,
-                                                    label: 'Enter package ID',
+                                                    label: 'enter_package_id'.tr,
                                                     type: TextInputType.number,
                                                     style: TextStyle(
                                                       color: thirdDefaultColor,
                                                     ),
                                                     validation:
-                                                        'Please enter your package id',
+                                                        'please_enter_your_package_id'.tr,
                                                     prefixIcon: CircleAvatar(
                                                         backgroundColor:
                                                             thirdDefaultColor,
@@ -152,7 +152,7 @@ class _MainScreenState extends State<MainScreen> {
                                                         } else {
                                                           showToast(
                                                               msg:
-                                                                  'please enter your package id',
+                                                                  'please_enter_your_package_id'.tr,
                                                               color:
                                                                   thirdDefaultColor,
                                                               textColor:
@@ -212,7 +212,7 @@ class _MainScreenState extends State<MainScreen> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            'What are you looking for?',
+                                            'what_are_you_looking_for'.tr,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodyText2!
@@ -227,7 +227,7 @@ class _MainScreenState extends State<MainScreen> {
                                           children: [
                                             buildContentItem(
                                                 icon: Icons.dashboard_rounded,
-                                                text: "My Packages",
+                                                text: "my_packages".tr,
                                                 context: context,
                                                 fun: () {
                                                   navigateTo(context,
@@ -238,7 +238,7 @@ class _MainScreenState extends State<MainScreen> {
                                             ),
                                             buildContentItem(
                                                 icon: Icons.add_circle_outlined,
-                                                text: "New Order",
+                                                text: "new_order".tr,
                                                 context: context,
                                                 fun: () {
                                                   navigateTo(context,
@@ -271,7 +271,7 @@ class _MainScreenState extends State<MainScreen> {
                                                   // );
                                                 },
                                                 icon: Icons.local_offer,
-                                                text: 'Offers'),
+                                                text: 'offers'.tr),
                                             SizedBox(
                                               width: 20.0,
                                             ),
@@ -282,7 +282,7 @@ class _MainScreenState extends State<MainScreen> {
                                                       context, ReportScreen());
                                                 },
                                                 icon: Icons.bug_report,
-                                                text: 'Report a problem')
+                                                text: 'report_a_problem'.tr)
                                           ],
                                         ),
                                       ),

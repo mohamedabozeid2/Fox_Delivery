@@ -30,13 +30,12 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
     var packageDescription = TextEditingController();
     var formKey = GlobalKey<FormState>();
 
-
     return BlocConsumer<FoxCubit, FoxStates>(
       listener: (context, state) {
         if (state is FoxNewOrderSuccessState) {
           // navigateTo(context, UserPackagesDisplayScreen());
           navigateTo(context, MainScreen(drawerController: drawerController));
-          Get.snackbar('Fox Delivery', 'Your order submitted successfully',
+          Get.snackbar('Fox Delivery', 'Your order submitted successfully'.tr,
               colorText: Colors.white, backgroundColor: Colors.green[400]);
         } else if (state is FoxNewOrderErrorState) {
           Get.snackbar('Fox Delivery', 'Failed');
@@ -50,22 +49,41 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
               SliverAppBar(),
               SliverFillRemaining(
                 hasScrollBody: false,
-                child: state is FoxGetPackageNumbersLoadingState ? Center(child: CircularProgressIndicator(color: thirdDefaultColor,)) : Padding(
+                child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Form(
                     key: formKey,
                     child: Column(
                       children: [
-                        Container(child: Image(image: AssetImage('assets/images/new_order.png'))),
+                        Container(
+                            child: Image(
+                                image:
+                                    AssetImage('assets/images/new_order.png'))),
                         SizedBox(
                           height: 20,
                         ),
                         Expanded(
                           child: Column(
                             children: [
-                              Text('Your package ID is: $packageIDCounter', style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                color: Colors.white
-                              ),),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'your_package_id'.tr,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText2!
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                  Text(
+                                    '${packageIDCounter}',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText2!
+                                        .copyWith(color: Colors.white),
+                                  )
+                                ],
+                              ),
                               SizedBox(
                                 height: 15,
                               ),
@@ -75,9 +93,10 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                                 child: textFormFieldWithHint(
                                     context: context,
                                     controller: packageName,
-                                    label: 'Package Name',
+                                    label: 'package_name'.tr,
                                     style: TextStyle(color: Colors.grey),
-                                    validation: 'Please enter a name for your package',
+                                    validation:
+                                        'Please enter a name for your package',
                                     type: TextInputType.text,
                                     borderColor: Colors.white,
                                     borderRadius: 15.0),
@@ -88,8 +107,9 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                                 child: textFormFieldWithHint(
                                     context: context,
                                     controller: packageDescription,
-                                    validation: 'Please enter a description for your package',
-                                    label: 'Package Description',
+                                    validation:
+                                        'Please enter a description for your package',
+                                    label: 'package_description'.tr,
                                     style: TextStyle(color: Colors.grey),
                                     type: TextInputType.text,
                                     borderColor: Colors.white,
@@ -101,8 +121,9 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                                 child: textFormFieldWithHint(
                                     context: context,
                                     controller: fromLocation,
-                                    validation: 'Please enter the location of your package',
-                                    label: 'From',
+                                    validation:
+                                        'Please enter the location of your package',
+                                    label: 'package_from'.tr,
                                     style: TextStyle(color: Colors.grey),
                                     type: TextInputType.text,
                                     borderColor: Colors.white,
@@ -114,8 +135,9 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                                 child: textFormFieldWithHint(
                                     context: context,
                                     controller: toLocation,
-                                    validation: 'Please enter the destination of your package',
-                                    label: 'To',
+                                    validation:
+                                        'Please enter the destination of your package',
+                                    label: 'package_to'.tr,
                                     style: TextStyle(color: Colors.grey),
                                     type: TextInputType.text,
                                     borderColor: Colors.white,
@@ -140,28 +162,34 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                         //     TextColor: Colors.white,
                         //     backgroundColor: buttonColor,
                         //     width: Get.width * 0.3),
-                        state is FoxNewOrderLoadingState ? Center(child: CircularProgressIndicator(color: thirdDefaultColor,)) : ConfirmationSlider(
-                          onConfirmation: () {
-                            if(formKey.currentState!.validate()){
-                              FoxCubit.get(context).newOrder(
-                                  packageName: packageName.text,
-                                  description: packageDescription.text,
-                                  fromLocation: fromLocation.text,
-                                  toLocation: toLocation.text,
-                                dateTime: DateTime.now().toString(),
-                                dateTimeDisplay: DateFormat.yMMMd().add_jm().format(now).toString()
-                              );
-                            }
-
-                          },
-                          backgroundColor: thirdDefaultColor,
-                          backgroundColorEnd: buttonColor,
-                          foregroundColor: buttonColor,
-                          textStyle: TextStyle(color: Colors.white,fontSize: 15
-                          ),
-                          height: 60,
-                        ),
-
+                        state is FoxNewOrderLoadingState
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                color: thirdDefaultColor,
+                              ))
+                            : ConfirmationSlider(
+                          text: 'slide_to_confirm'.tr,
+                                onConfirmation: () {
+                                  if (formKey.currentState!.validate()) {
+                                    FoxCubit.get(context).newOrder(
+                                        packageName: packageName.text,
+                                        description: packageDescription.text,
+                                        fromLocation: fromLocation.text,
+                                        toLocation: toLocation.text,
+                                        dateTime: DateTime.now().toString(),
+                                        dateTimeDisplay: DateFormat.yMMMd()
+                                            .add_jm()
+                                            .format(now)
+                                            .toString());
+                                  }
+                                },
+                                backgroundColor: thirdDefaultColor,
+                                backgroundColorEnd: buttonColor,
+                                foregroundColor: buttonColor,
+                                textStyle: TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                                height: 60,
+                              ),
                       ],
                     ),
                   ),

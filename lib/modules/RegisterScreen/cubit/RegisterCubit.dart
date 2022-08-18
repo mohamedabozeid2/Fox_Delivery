@@ -2,10 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fox_delivery/models/UserMdeol.dart';
+import 'package:fox_delivery/models/UserModel.dart';
 import 'package:fox_delivery/modules/RegisterScreen/cubit/RegisterStates.dart';
 import 'package:fox_delivery/shared/constants/constants.dart';
 import 'package:fox_delivery/shared/cubit/cubit.dart';
+import 'package:fox_delivery/shared/network/local/CacheHelper.dart';
 
 class RegisterCubit extends Cubit<FoxRegisterStates> {
   RegisterCubit() : super(FoxInitialRegisterState());

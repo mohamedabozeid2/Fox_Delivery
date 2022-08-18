@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fox_delivery/models/PackageModel.dart';
-import 'package:fox_delivery/models/UserMdeol.dart';
+import 'package:fox_delivery/models/UserModel.dart';
 import 'package:fox_delivery/models/problemModel.dart';
 import 'package:fox_delivery/modules/LoginScreen/LoginScreen.dart';
 import 'package:fox_delivery/shared/components/components.dart';
@@ -13,6 +12,8 @@ import 'package:fox_delivery/shared/cubit/states.dart';
 import 'package:fox_delivery/shared/network/EndPoint.dart';
 import 'package:fox_delivery/shared/network/local/CacheHelper.dart';
 import 'package:fox_delivery/shared/network/remote/Dio_Helper.dart';
+import 'package:get/get.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class FoxCubit extends Cubit<FoxStates> {
   FoxCubit() : super(FoxInitialState());
@@ -90,7 +91,7 @@ class FoxCubit extends Cubit<FoxStates> {
         'packageNumber': userModel!.packageNumber! + 1,
       }).then((value) {
         packageIDCounter++;
-        getUserPackages();
+        getUserPackages(newOrder: true);
         emit(FoxNewOrderSuccessState());
       }).catchError((error) {});
     }).catchError((error) {
@@ -99,8 +100,20 @@ class FoxCubit extends Cubit<FoxStates> {
     });
   }
 
+  void checkConnection() async {
+    internetConnection = await InternetConnectionChecker().hasConnection;
+    if (internetConnection) {
+      getUserPackages();
+      getPackagesNumber();
+    } else {
+      Get.snackbar('Fox Delivery', 'No Internet Connection',
+          colorText: Colors.white, backgroundColor: Colors.red);
+    }
+  }
+
   void getUserPackages(
-      {bool fromTracking =
+      {bool newOrder = false,
+      bool fromTracking =
           false} /*{bool fromTrackingScreen = false, int? id}*/) {
     userPackages = [];
     packagesID = [];
@@ -122,7 +135,7 @@ class FoxCubit extends Cubit<FoxStates> {
       //
       //   getSpecificPackage(id: id!);
       // }
-      if (fromTracking == false) {
+      if (fromTracking == false && newOrder == false) {
         emit(FoxGetUserPackagesSuccessState());
       }
     }).catchError((error) {
@@ -263,10 +276,8 @@ class FoxCubit extends Cubit<FoxStates> {
   }
 
   void getPackagesNumber() {
-    emit(FoxGetPackageNumbersLoadingState());
     FirebaseFirestore.instance.collection('packages').get().then((value) {
       packageIDCounter = value.docs.length + 1;
-      emit(FoxGetPackageNumbersSuccessState());
     });
   }
 

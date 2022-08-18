@@ -5,6 +5,7 @@ import 'package:fox_delivery/shared/constants/constants.dart';
 import 'package:fox_delivery/shared/cubit/cubit.dart';
 import 'package:fox_delivery/shared/cubit/states.dart';
 import 'package:fox_delivery/styles/Themes.dart';
+import 'package:get/get.dart';
 
 class PackageTrackPage extends StatefulWidget {
   final int id;
@@ -88,7 +89,7 @@ class _PackageTrackPageState extends State<PackageTrackPage> {
                                     height: 20.0,
                                   ),
                                   Text(
-                                    'Package Not Found',
+                                    'package_not_found'.tr,
                                     style:
                                         TextStyle(color: thirdDefaultColor),
                                   ),

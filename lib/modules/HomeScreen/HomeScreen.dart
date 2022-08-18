@@ -10,6 +10,7 @@ import 'package:fox_delivery/modules/SettingsScreen/SettingsScreen.dart';
 import 'package:fox_delivery/shared/constants/constants.dart';
 import 'package:fox_delivery/shared/cubit/cubit.dart';
 import 'package:fox_delivery/shared/cubit/states.dart';
+import 'package:fox_delivery/shared/network/local/CacheHelper.dart';
 import 'package:fox_delivery/styles/Themes.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,17 +21,25 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final drawerController = ZoomDrawerController();
   MenuItemDetails currentItem = MenuItems.home;
+  @override
+  // void initState() {
+  //   FoxCubit.get(context).getUserData(userID: uId);
+  //
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
+
     return BlocProvider(
-      create: (BuildContext context) => FoxCubit()..getPackagesNumber()..getUserPackages()/*..getUserData(userID: userModel!.uId!)*/,
+      create: (BuildContext context) => FoxCubit()..checkConnection()..getUserData(userID: uId)/*..getUserData(userID: userModel!.uId!)*/,
       child: BlocConsumer<FoxCubit, FoxStates>(
         listener: (context, state) {},
         builder: (context, state) {
           return ZoomDrawer(
             menuScreenWidth: double.infinity,
               mainScreenTapClose: true,
+              isRtl: selectedLanguage == 'ar' ? true : false,
               moveMenuScreen: true,
               style: DrawerStyle.defaultStyle,
               menuScreen: Builder(

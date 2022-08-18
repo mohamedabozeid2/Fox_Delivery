@@ -7,6 +7,7 @@ import 'package:fox_delivery/shared/constants/constants.dart';
 import 'package:fox_delivery/shared/cubit/cubit.dart';
 import 'package:fox_delivery/shared/cubit/states.dart';
 import 'package:fox_delivery/styles/Themes.dart';
+import 'package:get/get.dart';
 
 class UserPackagesDisplayScreen extends StatefulWidget {
   @override
@@ -36,7 +37,8 @@ class _UserPackagesDisplayScreenState extends State<UserPackagesDisplayScreen> {
                 hasScrollBody: true,
                 child: Padding(
                   padding: const EdgeInsets.only(
-                      bottom: 20.0, ),
+                    bottom: 20.0,
+                  ),
                   child: state is FoxGetUserPackagesLoadingState
                       ? Center(child: CircularProgressIndicator())
                       : Column(
@@ -47,35 +49,62 @@ class _UserPackagesDisplayScreenState extends State<UserPackagesDisplayScreen> {
                                         physics: BouncingScrollPhysics(),
                                         itemBuilder: (context, index) {
                                           return packageItemBuilder(
-                                              model: userPackages[index], index: index);
+                                              model: userPackages[index],
+                                              index: index);
                                         },
                                         separatorBuilder: (context, index) {
-                                          return SizedBox(height: 10,);
+                                          return SizedBox(
+                                            height: 10,
+                                          );
                                         },
                                         itemCount: userPackages.length),
                                   )
                                 : Expanded(
-                                  child: Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.work_off,
-                                            color: Colors.white,
-                                            size: 50.0,
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          Text(
-                                            'No Packages Yet',
-                                            style: TextStyle(color: Colors.white),
-                                          ),
-                                        ],
+                                    child: Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.work_off,
+                                              color: Colors.white,
+                                              size: 50.0,
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            Text(
+                                              'No Packages Yet',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            internetConnection == false
+                                                ? Column(
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 20.0,
+                                                      ),
+                                                      defaultButton(
+                                                          text: 'Refresh',
+                                                          TextColor: Colors.white,
+                                                          borderRadius: 5.0,
+                                                          backgroundColor: buttonColor,
+                                                          width: Get.width*0.3,
+                                                          fun: () {
+                                                            FoxCubit.get(
+                                                                    context)
+                                                                .checkConnection();
+                                                          }),
+                                                    ],
+                                                  )
+                                                : Container()
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                ),
+                                  ),
                           ],
                         ),
                 ),
@@ -121,9 +150,14 @@ class _UserPackagesDisplayScreenState extends State<UserPackagesDisplayScreen> {
               Column(
                 children: [
                   defaultButton(
-                      text: 'Details',
+                      text: 'details'.tr,
                       fun: () {
-                        navigateTo(context, PackageDetailsScreen(packageIndex: index, package: userPackages[index],));
+                        navigateTo(
+                            context,
+                            PackageDetailsScreen(
+                              packageIndex: index,
+                              package: userPackages[index],
+                            ));
                       },
                       width: 100,
                       backgroundColor: thirdDefaultColor,

@@ -16,6 +16,7 @@ import 'package:fox_delivery/shared/network/local/CacheHelper.dart';
 import 'package:fox_delivery/shared/network/remote/Dio_Helper.dart';
 import 'package:fox_delivery/styles/Themes.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'firebase_options.dart';
 import 'modules/BoardingScreen/BoardingScreen.dart';
 
@@ -34,6 +35,7 @@ late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  internetConnection = await InternetConnectionChecker().hasConnection;
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -82,8 +84,9 @@ void main() async {
 
   if (CacheHelper.getData(key: 'language') == null) {
     CacheHelper.saveData(key: 'language', value: 'en');
+    selectedLanguage = 'en';
   } else {
-    CacheHelper.getData(key: 'language');
+    selectedLanguage = CacheHelper.getData(key: 'language');
   }
 
   Widget startWidget;
@@ -167,6 +170,8 @@ class _MyAppState extends State<MyApp> {
       child: BlocConsumer<FoxCubit, FoxStates>(
         listener: (context, state) {},
         builder: (context, state) {
+          precacheImage(AssetImage('assets/images/new_order.png'), context);
+          precacheImage(AssetImage('assets/images/Online_Shopping3.png'), context);
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
             locale: Locale(selectedLanguage),

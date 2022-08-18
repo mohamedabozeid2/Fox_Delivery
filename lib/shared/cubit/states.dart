@@ -17,9 +17,6 @@ class FoxUpdateUserInfoLoadingState extends FoxStates{}
 class FoxUpdateUserInfoSuccessState extends FoxStates{}
 class FoxUpdateUserInfoErrorState extends FoxStates{}
 
-class FoxGetPackageNumbersLoadingState extends FoxStates{}
-class FoxGetPackageNumbersSuccessState extends FoxStates{}
-
 class FoxGetUserPackagesLoadingState extends FoxStates{}
 class FoxGetUserPackagesSuccessState extends FoxStates{}
 class FoxGetUserPackagesErrorState extends FoxStates{}

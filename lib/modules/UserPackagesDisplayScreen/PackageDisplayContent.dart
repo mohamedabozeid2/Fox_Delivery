@@ -22,9 +22,7 @@ class PackageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<FoxCubit, FoxStates>(
-      listener: (context, state) {
-
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 20.0),
@@ -55,16 +53,17 @@ class PackageContent extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                  CircleAvatar(
-                                    radius: 50,
-                                    backgroundColor: secondDefaultColor,
-                                    backgroundImage:
-                                        AssetImage('assets/images/package3.png'),
-                                  ),
+                                CircleAvatar(
+                                  radius: 50,
+                                  backgroundColor: secondDefaultColor,
+                                  backgroundImage:
+                                      AssetImage('assets/images/package3.png'),
+                                ),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Row(
+                                  textDirection:  TextDirection.ltr,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
@@ -76,9 +75,7 @@ class PackageContent extends StatelessWidget {
                                           .copyWith(color: secondDefaultColor),
                                     ),
                                     Text(
-                                      package
-                                          // userPackages[packageIndex]
-                                          .clientLastName!,
+                                      ' ${package.clientLastName!} ',
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyText2!
@@ -93,7 +90,7 @@ class PackageContent extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'Package ID :',
+                                      'package_id'.tr,
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyText2!
@@ -102,7 +99,7 @@ class PackageContent extends StatelessWidget {
                                               fontSize: 16),
                                     ),
                                     Text(
-                                      ' ${
+                                      ': ${
                                       // userPackages[packageIndex]
                                       package.packageId!}',
                                       style: Theme.of(context)
@@ -139,21 +136,21 @@ class PackageContent extends StatelessWidget {
                         border: TableBorder.symmetric(
                             inside: BorderSide(color: Colors.white)),
                         children: [
-                          buildTableRow('Package ID: ',
+                          buildTableRow('package_id'.tr,
                               "${/*userPackages[packageIndex]*/ package.packageId}"),
-                          buildTableRow('Client Name: ',
+                          buildTableRow('client_name'.tr,
                               "${/*userPackages[packageIndex]*/ package.clientFirstName} ${/*userPackages[packageIndex]*/ package.clientLastName}"),
-                          buildTableRow('Package Name: ',
+                          buildTableRow('package_name'.tr,
                               "${/*userPackages[packageIndex]*/ package.packageName}"),
-                          buildTableRow('Package Description: ',
+                          buildTableRow('package_description'.tr,
                               "${/*userPackages[packageIndex]*/ package.description}"),
-                          buildTableRow('Package From: ',
+                          buildTableRow('package_from'.tr,
                               "${/*userPackages[packageIndex]*/ package.fromLocation}"),
-                          buildTableRow('Package To: ',
+                          buildTableRow('package_to'.tr,
                               "${/*userPackages[packageIndex]*/ package.toLocation}"),
-                          buildTableRow('Order Time: ',
+                          buildTableRow('order_time'.tr,
                               "${/*userPackages[packageIndex]*/ package.dateTimeDisplay}"),
-                          buildTableRow('Status ',
+                          buildTableRow('status'.tr,
                               "${/*userPackages[packageIndex]*/ package.status}"),
                         ],
                       ),
@@ -164,7 +161,7 @@ class PackageContent extends StatelessWidget {
                         children: [
                           Expanded(
                             child: defaultButton(
-                                text: 'Ok!',
+                                text: 'ok'.tr,
                                 fun: () {
                                   Navigator.pop(context);
                                 },

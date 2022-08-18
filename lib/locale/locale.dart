@@ -18,7 +18,7 @@ class MyLocale implements Translations {
           'email': 'البريد الالكتروني',
           'email_validator': 'من فضلك ادخل البريد الالكتروني',
           'password_validator': 'من فضلك ادخل كلمة السر',
-          'tracking_your_package': 'من فضلك ادخل كلمة السر',
+          'tracking_your_package': 'تتبع شحناتك',
           'please_enter_your_package_name': 'من فضلك ادخل اسم الشحنة',
           'please_enter_your_package_description': 'من فضلك ادخل اسم الشحنة',
           'please_enter_your_package_location': 'من فضلك ادخل عنوان استلام الشحنة',

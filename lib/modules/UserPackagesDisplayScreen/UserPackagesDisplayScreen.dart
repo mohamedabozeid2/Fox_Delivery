@@ -42,71 +42,71 @@ class _UserPackagesDisplayScreenState extends State<UserPackagesDisplayScreen> {
                   child: state is FoxGetUserPackagesLoadingState
                       ? Center(child: CircularProgressIndicator())
                       : Column(
-                          children: [
-                            userPackages.length != 0
-                                ? Expanded(
-                                    child: ListView.separated(
-                                        physics: BouncingScrollPhysics(),
-                                        itemBuilder: (context, index) {
-                                          return packageItemBuilder(
-                                              model: userPackages[index],
-                                              index: index);
-                                        },
-                                        separatorBuilder: (context, index) {
-                                          return SizedBox(
-                                            height: 10,
-                                          );
-                                        },
-                                        itemCount: userPackages.length),
-                                  )
-                                : Expanded(
-                                    child: Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.work_off,
-                                              color: Colors.white,
-                                              size: 50.0,
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            Text(
-                                              'No Packages Yet',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            internetConnection == false
-                                                ? Column(
-                                                    children: [
-                                                      SizedBox(
-                                                        height: 20.0,
-                                                      ),
-                                                      defaultButton(
-                                                          text: 'Refresh',
-                                                          TextColor: Colors.white,
-                                                          borderRadius: 5.0,
-                                                          backgroundColor: buttonColor,
-                                                          width: Get.width*0.3,
-                                                          fun: () {
-                                                            FoxCubit.get(
-                                                                    context)
-                                                                .checkConnection();
-                                                          }),
-                                                    ],
-                                                  )
-                                                : Container()
-                                          ],
-                                        ),
-                                      ),
+                    children: [
+                      userPackages.length != 0
+                          ? Expanded(
+                        child: ListView.separated(
+                            physics: BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return packageItemBuilder(
+                                  model: userPackages[index],
+                                  index: index);
+                            },
+                            separatorBuilder: (context, index) {
+                              return SizedBox(
+                                height: 10,
+                              );
+                            },
+                            itemCount: userPackages.length),
+                      )
+                          : Expanded(
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              mainAxisAlignment:
+                              MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.work_off,
+                                  color: Colors.white,
+                                  size: 50.0,
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  'No Packages Yet',
+                                  style: TextStyle(
+                                      color: Colors.white),
+                                ),
+                                internetConnection == false
+                                    ? Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 20.0,
                                     ),
-                                  ),
-                          ],
+                                    defaultButton(
+                                        text: 'Refresh',
+                                        TextColor: Colors.white,
+                                        borderRadius: 5.0,
+                                        backgroundColor: buttonColor,
+                                        width: Get.width*0.3,
+                                        fun: () {
+                                          FoxCubit.get(
+                                              context)
+                                              .checkConnection();
+                                        }),
+                                  ],
+                                )
+                                    : Container()
+                              ],
+                            ),
+                          ),
                         ),
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],

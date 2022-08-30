@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fox_delivery/models/OfferModel.dart';
 import 'package:fox_delivery/models/PackageModel.dart';
 import 'package:fox_delivery/models/UserModel.dart';
 import 'package:fox_delivery/models/problemModel.dart';
@@ -33,7 +34,6 @@ class FoxCubit extends Cubit<FoxStates> {
         .get()
         .then((value) {
       userModel = FoxUserModel.fromJson(value.data()!);
-      print("FROM GET USER DATA ${value.id}");
       updateDeviceToken();
       emit(FoxGetUserDataSuccessState());
     }).catchError((error) {
@@ -51,11 +51,11 @@ class FoxCubit extends Cubit<FoxStates> {
 
   void newOrder(
       {required String packageName,
-      required String description,
-      required String fromLocation,
-      required String toLocation,
-      required String dateTime,
-      required String dateTimeDisplay}) {
+        required String description,
+        required String fromLocation,
+        required String toLocation,
+        required String dateTime,
+        required String dateTimeDisplay}) {
     emit(FoxNewOrderLoadingState());
     PackageModel model = PackageModel(
       toLocation: toLocation,
@@ -72,7 +72,9 @@ class FoxCubit extends Cubit<FoxStates> {
     );
     FirebaseFirestore.instance
         .collection('packages')
-        .add(model.toMap())
+        .doc(packageIDCounter.toString())
+        .set(model.toMap())
+    // .add(model.toMap())
         .then((value) {
       FirebaseFirestore.instance
           .collection('users')
@@ -105,6 +107,7 @@ class FoxCubit extends Cubit<FoxStates> {
     if (internetConnection) {
       getUserPackages();
       getPackagesNumber();
+      getOffers();
     } else {
       Get.snackbar('Fox Delivery', 'No Internet Connection',
           colorText: Colors.white, backgroundColor: Colors.red);
@@ -113,8 +116,8 @@ class FoxCubit extends Cubit<FoxStates> {
 
   void getUserPackages(
       {bool newOrder = false,
-      bool fromTracking =
-          false} /*{bool fromTrackingScreen = false, int? id}*/) {
+        bool fromTracking =
+        false} /*{bool fromTrackingScreen = false, int? id}*/) {
     userPackages = [];
     packagesID = [];
     if (fromTracking == false) {
@@ -327,21 +330,21 @@ class FoxCubit extends Cubit<FoxStates> {
         .collection('users')
         .doc(uId!)
         .update({
-          'email': userModel!.email,
-          'firstName': userModel!.firstName,
-          'lastName': userModel!.lastName,
-          'isEmailVerified': userModel!.isEmailVerified,
-          'completedPackages': userModel!.completedPackages,
-          'notCompletedPackages': userModel!.notCompletedPackages,
-          'packageNumber': userModel!.packageNumber,
-          'phone': userModel!.phone,
-          'uId': userModel!.uId,
-          'deviceToken': deviceToken,
-        })
+      'email': userModel!.email,
+      'firstName': userModel!.firstName,
+      'lastName': userModel!.lastName,
+      'isEmailVerified': userModel!.isEmailVerified,
+      'completedPackages': userModel!.completedPackages,
+      'notCompletedPackages': userModel!.notCompletedPackages,
+      'packageNumber': userModel!.packageNumber,
+      'phone': userModel!.phone,
+      'uId': userModel!.uId,
+      'deviceToken': deviceToken,
+    })
         .then((value) {})
         .catchError((error) {
-          print(error.toString());
-        });
+      print(error.toString());
+    });
   }
 
   void reportProblem({
@@ -350,6 +353,8 @@ class FoxCubit extends Cubit<FoxStates> {
     required String clientFirstName,
     required String phoneNumber,
     required String problem,
+    required String dateTime,
+    required String dateTimeDisplay
   }) {
     emit(FoxReportProblemLoadingState());
     ProblemModel model = ProblemModel(
@@ -357,7 +362,11 @@ class FoxCubit extends Cubit<FoxStates> {
         clientLastName: clientLastName,
         phoneNumber: phoneNumber,
         clientFirstName: clientFirstName,
-        problem: problem);
+        problem: problem,
+        dateTime: dateTime,
+        dateTimeDisplay:dateTimeDisplay
+
+    );
     FirebaseFirestore.instance
         .collection('problem')
         .add(model.toMap())
@@ -366,6 +375,19 @@ class FoxCubit extends Cubit<FoxStates> {
     }).catchError((error) {
       print("Error from report problem ${error.toString()}");
       emit(FoxReportProblemErrorState());
+    });
+  }
+
+  void getOffers() {
+    emit(FoxGetOffersLoadingState());
+    FirebaseFirestore.instance.collection('offers').get().then((value) {
+      value.docs.forEach((element) {
+        offers.add(OfferModel.fromJson(element.data()));
+      });
+      emit(FoxGetOffersSuccessState());
+    }).catchError((error) {
+      print('Error while get offers >>>>>> ${error.toString()}');
+      emit(FoxGetOffersErrorState());
     });
   }
 }

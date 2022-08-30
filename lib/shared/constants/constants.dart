@@ -1,4 +1,5 @@
 import 'package:flutter_zoom_drawer/config.dart';
+import 'package:fox_delivery/models/OfferModel.dart';
 import 'package:fox_delivery/models/PackageModel.dart';
 import 'package:fox_delivery/models/UserModel.dart';
 
@@ -16,6 +17,6 @@ String packageStatus = '';
 DateTime now =  DateTime.now();
 final drawerController = ZoomDrawerController();
 bool internetConnection = true;
-
+List<OfferModel> offers = [];
 String? deviceToken = "";
 

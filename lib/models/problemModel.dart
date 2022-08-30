@@ -4,14 +4,18 @@ class ProblemModel{
   String? clientUid;
   String? problem;
   String? phoneNumber;
+  String? dateTime;
+  String? dateTimeDisplay;
 
   ProblemModel({
     required this.clientUid,
     required this.clientLastName,
     required this.clientFirstName,
     required this.problem,
-    required this.phoneNumber
-});
+    required this.phoneNumber,
+    required this.dateTime,
+    required this.dateTimeDisplay,
+  });
 
   ProblemModel.fromJson(Map<String, dynamic> json){
     clientFirstName = json['clientFirstName'];
@@ -19,6 +23,8 @@ class ProblemModel{
     clientLastName = json['clientLastName'];
     problem = json['problem'];
     phoneNumber = json['phoneNumber'];
+    dateTimeDisplay = json['dateTimeDisplay'];
+    dateTime = json['dateTime'];
   }
 
   Map<String, dynamic> toMap(){
@@ -28,6 +34,8 @@ class ProblemModel{
       'clientUid' : clientUid,
       'problem' : problem,
       'phoneNumber' : phoneNumber,
+      'dateTimeDisplay' : dateTimeDisplay,
+      'dateTime' : dateTime,
     };
   }
 }

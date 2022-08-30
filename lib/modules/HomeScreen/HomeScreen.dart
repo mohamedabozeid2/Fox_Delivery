@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
         listener: (context, state) {},
         builder: (context, state) {
           return ZoomDrawer(
-            menuScreenWidth: double.infinity,
+              menuScreenWidth: double.infinity,
               mainScreenTapClose: true,
               isRtl: selectedLanguage == 'ar' ? true : false,
               moveMenuScreen: true,

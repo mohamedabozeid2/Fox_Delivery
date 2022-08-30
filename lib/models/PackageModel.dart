@@ -23,7 +23,7 @@ class PackageModel{
     required this.status,
     required this.dateTime,
     required this.dateTimeDisplay,
-});
+  });
 
   PackageModel.fromJson(Map<String, dynamic> json) {
     toLocation = json['toLocation'];

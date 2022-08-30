@@ -30,15 +30,15 @@ class PackageDetailsScreen extends StatelessWidget {
                   hasScrollBody: false,
                   child: state is FoxGetUserPackagesLoadingState
                       ? Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                          ),
-                        )
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  )
                       : PackageContent(
-                          fromTracking: false,
-                          package: package,
-                          packageIndex: packageIndex,
-                        ),
+                    fromTracking: false,
+                    package: package,
+                    packageIndex: packageIndex,
+                  ),
                 )
               ],
             ));

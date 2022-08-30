@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_zoom_drawer/config.dart';
 import 'package:fox_delivery/modules/NewOrderScreen/NewOrderScreen.dart';
+import 'package:fox_delivery/modules/OffersScreen/OffersScreen.dart';
 import 'package:fox_delivery/modules/PackageTrackPage/PackageTrackPage.dart';
 import 'package:fox_delivery/modules/ReportScreen/ReportScreen.dart';
 import 'package:fox_delivery/modules/Services/Notifications.dart';
@@ -47,7 +48,7 @@ class _MainScreenState extends State<MainScreen> {
               SliverAppBar(
                 backgroundColor: thirdDefaultColor,
                 systemOverlayStyle:
-                    SystemUiOverlayStyle(statusBarColor: thirdDefaultColor),
+                SystemUiOverlayStyle(statusBarColor: thirdDefaultColor),
                 leading: IconButton(
                   onPressed: () {
                     widget.drawerController.toggle?.call();
@@ -58,245 +59,240 @@ class _MainScreenState extends State<MainScreen> {
               SliverFillRemaining(
                 hasScrollBody: false,
                 child: state is FoxGetUserDataLoadingState ||
-                        state is FoxGetUserPackagesLoadingState
+                    state is FoxGetUserPackagesLoadingState
                     ? Center(
-                        child: CircularProgressIndicator(
-                        color: Colors.white,
-                      ))
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ))
                     : Center(
+                  child: Column(
+                    children: [
+                      Expanded(
                         child: Column(
                           children: [
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: thirdDefaultColor,
-                                        borderRadius: BorderRadius.only(
-                                            bottomRight: Radius.circular(40.0),
-                                            bottomLeft: Radius.circular(40.0))),
-                                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 20.0,
-                                          right: 20.0,
-                                          bottom: 10.0,
-                                          top: 20.0),
-                                      child: Column(
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: thirdDefaultColor,
+                                  borderRadius: BorderRadius.only(
+                                      bottomRight: Radius.circular(40.0),
+                                      bottomLeft: Radius.circular(40.0))),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 20.0,
+                                    right: 20.0,
+                                    bottom: 10.0,
+                                    top: 20.0),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'tracking_your_package'.tr,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .copyWith(color: Colors.white),
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    Text(
+                                      "please_enter_your_package_id".tr,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .caption!
+                                          .copyWith(
+                                          color: Colors.grey[300],
+                                          fontSize: 15),
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    Container(
+                                      child: Row(
                                         children: [
-                                          Text(
-                                            'tracking_your_package'.tr,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1!
-                                                .copyWith(color: Colors.white),
+                                          Expanded(
+                                            child: textFormFieldWithHint(
+                                              context: context,
+                                              borderRadius: 5.0,
+                                              borderColor: Colors.white,
+                                              controller:
+                                              packageTrackingController,
+                                              label: 'enter_package_id'.tr,
+                                              type: TextInputType.number,
+                                              style: TextStyle(
+                                                color: thirdDefaultColor,
+                                              ),
+                                              validation:
+                                              'please_enter_your_package_id'.tr,
+                                              prefixIcon: CircleAvatar(
+                                                  backgroundColor:
+                                                  thirdDefaultColor,
+                                                  child: Icon(
+                                                    Icons.fire_truck,
+                                                    size: 18,
+                                                    color: Colors.white,
+                                                  )),
+                                            ),
                                           ),
                                           SizedBox(
-                                            height: 20.0,
+                                            width: 10.0,
                                           ),
-                                          Text(
-                                            "please_enter_your_package_id".tr,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .caption!
-                                                .copyWith(
-                                                    color: Colors.grey[300],
-                                                    fontSize: 15),
-                                          ),
-                                          SizedBox(
-                                            height: 20.0,
-                                          ),
-                                          Container(
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  child: textFormFieldWithHint(
-                                                    context: context,
-                                                    borderRadius: 5.0,
-                                                    borderColor: Colors.white,
-                                                    controller:
-                                                        packageTrackingController,
-                                                    label: 'enter_package_id'.tr,
-                                                    type: TextInputType.number,
-                                                    style: TextStyle(
-                                                      color: thirdDefaultColor,
-                                                    ),
-                                                    validation:
+                                          CircleAvatar(
+                                            radius: 25,
+                                            backgroundColor: Colors.white,
+                                            child: IconButton(
+                                                onPressed: () {
+                                                  if (packageTrackingController
+                                                      .text.isNotEmpty) {
+                                                    navigateTo(
+                                                        context,
+                                                        PackageTrackPage(
+                                                            id: int.parse(
+                                                                packageTrackingController
+                                                                    .text)));
+                                                  } else {
+                                                    showToast(
+                                                        msg:
                                                         'please_enter_your_package_id'.tr,
-                                                    prefixIcon: CircleAvatar(
-                                                        backgroundColor:
-                                                            thirdDefaultColor,
-                                                        child: Icon(
-                                                          Icons.fire_truck,
-                                                          size: 18,
-                                                          color: Colors.white,
-                                                        )),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 10.0,
-                                                ),
-                                                CircleAvatar(
-                                                  radius: 25,
-                                                  backgroundColor: Colors.white,
-                                                  child: IconButton(
-                                                      onPressed: () {
-                                                        if (packageTrackingController
-                                                            .text.isNotEmpty) {
-                                                          navigateTo(
-                                                              context,
-                                                              PackageTrackPage(
-                                                                  id: int.parse(
-                                                                      packageTrackingController
-                                                                          .text)));
-                                                        } else {
-                                                          showToast(
-                                                              msg:
-                                                                  'please_enter_your_package_id'.tr,
-                                                              color:
-                                                                  thirdDefaultColor,
-                                                              textColor:
-                                                                  Colors.white);
-                                                        }
-                                                      },
-                                                      icon: Icon(
-                                                        Icons.arrow_forward,
                                                         color:
-                                                            thirdDefaultColor,
-                                                      )),
-                                                )
-                                                // defaultButton(
-                                                //     text: 'Track',
-                                                //     fun: () {},
-                                                //     width: 70,
-                                                //     borderRadius: 5,
-                                                //     backgroundColor: secondDefaultColor,
-                                                //     TextColor: Colors.white)
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 20.0,
-                                                bottom: 5.0,
-                                                right: 20.0,
-                                                left: 20.0),
-                                            child: Container(
-                                              clipBehavior:
-                                                  Clip.antiAliasWithSaveLayer,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20.0),
-                                              ),
-                                              child: Image(
-                                                image: AssetImage(
-                                                    'assets/images/Online_Shopping3.png'),
-                                                fit: BoxFit.fill,
-                                              ),
-                                            ),
+                                                        thirdDefaultColor,
+                                                        textColor:
+                                                        Colors.white);
+                                                  }
+                                                },
+                                                icon: Icon(
+                                                  Icons.arrow_forward,
+                                                  color:
+                                                  thirdDefaultColor,
+                                                )),
                                           )
+                                          // defaultButton(
+                                          //     text: 'Track',
+                                          //     fun: () {},
+                                          //     width: 70,
+                                          //     borderRadius: 5,
+                                          //     backgroundColor: secondDefaultColor,
+                                          //     TextColor: Colors.white)
                                         ],
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 35.0,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'what_are_you_looking_for'.tr,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2!
-                                                .copyWith(color: Colors.white),
-                                          ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 20.0, vertical: 15.0),
-                                        child: Row(
-                                          children: [
-                                            buildContentItem(
-                                                icon: Icons.dashboard_rounded,
-                                                text: "my_packages".tr,
-                                                context: context,
-                                                fun: () {
-                                                  navigateTo(context,
-                                                      UserPackagesDisplayScreen());
-                                                }),
-                                            SizedBox(
-                                              width: 20,
-                                            ),
-                                            buildContentItem(
-                                                icon: Icons.add_circle_outlined,
-                                                text: "new_order".tr,
-                                                context: context,
-                                                fun: () {
-                                                  navigateTo(context,
-                                                      NewOrderScreen());
-                                                }),
-                                          ],
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 20.0,
+                                          bottom: 5.0,
+                                          right: 20.0,
+                                          left: 20.0),
+                                      child: Container(
+                                        clipBehavior:
+                                        Clip.antiAliasWithSaveLayer,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(20.0),
+                                        ),
+                                        child: Image(
+                                          image: AssetImage(
+                                              'assets/images/Online_Shopping3.png'),
+                                          fit: BoxFit.fill,
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 20.0, vertical: 5),
-                                        child: Row(
-                                          children: [
-                                            buildContentItem(
-                                                context: context,
-                                                fun: () {
-                                                  FoxCubit.get(context)
-                                                      .sendNotification(
-                                                          receiverToken:
-                                                              deviceToken!,
-                                                          title:
-                                                              'Title message',
-                                                          body: 'Body Message');
-                                                  // service.showNotification(id: 0, title: 'Notification title', body: 'body', payload: 'payload');
-                                                  // Notifications.showNotification(
-                                                  //   title: 'Fox Delivery',
-                                                  //   payload: 'foxDelivery',
-                                                  //   body: 'Fox Says Hey',
-                                                  //
-                                                  // );
-                                                },
-                                                icon: Icons.local_offer,
-                                                text: 'offers'.tr),
-                                            SizedBox(
-                                              width: 20.0,
-                                            ),
-                                            buildContentItem(
-                                                context: context,
-                                                fun: () {
-                                                  navigateTo(
-                                                      context, ReportScreen());
-                                                },
-                                                icon: Icons.bug_report,
-                                                text: 'report_a_problem'.tr)
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 20.0,
-                                      )
-                                    ],
-                                  )
-                                ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
+                            SizedBox(
+                              height: 35.0,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'what_are_you_looking_for'.tr,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2!
+                                          .copyWith(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0, vertical: 15.0),
+                                  child: Row(
+                                    children: [
+                                      buildContentItem(
+                                          icon: Icons.dashboard_rounded,
+                                          text: "my_packages".tr,
+                                          context: context,
+                                          fun: () {
+                                            navigateTo(context,
+                                                UserPackagesDisplayScreen());
+                                          }),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      buildContentItem(
+                                          icon: Icons.add_circle_outlined,
+                                          text: "new_order".tr,
+                                          context: context,
+                                          fun: () {
+                                            navigateTo(context,
+                                                NewOrderScreen());
+                                          }),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0, vertical: 5),
+                                  child: Row(
+                                    children: [
+                                      buildContentItem(
+                                          context: context,
+                                          fun: () {
+                                            navigateTo(context, OffersScreen());
+                                            // FoxCubit.get(context)
+                                            //     .sendNotification(
+                                            //     receiverToken:
+                                            //     deviceToken!,
+                                            //     title:
+                                            //     'Title message',
+                                            //     body: 'Body Message');
+
+                                          },
+                                          icon: Icons.local_offer,
+                                          text: 'offers'.tr),
+                                      SizedBox(
+                                        width: 20.0,
+                                      ),
+                                      buildContentItem(
+                                          context: context,
+                                          fun: () {
+                                            navigateTo(
+                                                context, ReportScreen());
+                                          },
+                                          icon: Icons.bug_report,
+                                          text: 'report_a_problem'.tr)
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20.0,
+                                )
+                              ],
+                            )
                           ],
                         ),
                       ),
+                    ],
+                  ),
+                ),
               )
             ],
           ),

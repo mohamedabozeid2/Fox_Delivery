@@ -7,6 +7,7 @@ import 'package:fox_delivery/shared/cubit/cubit.dart';
 import 'package:fox_delivery/shared/cubit/states.dart';
 import 'package:fox_delivery/styles/Themes.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class ReportScreen extends StatelessWidget {
   var problemController = TextEditingController();
@@ -54,22 +55,27 @@ class ReportScreen extends StatelessWidget {
                         ),
                         state is FoxReportProblemLoadingState
                             ? Center(
-                                child: CircularProgressIndicator(
-                                color: buttonColor,
-                              ))
+                            child: CircularProgressIndicator(
+                              color: buttonColor,
+                            ))
                             : defaultButton(
-                                text: 'report'.tr,
-                                borderRadius: 5.0,
-                                fun: () {
-                                  FoxCubit.get(context).reportProblem(
-                                      clientUid: userModel!.uId!,
-                                      phoneNumber: userModel!.phone!,
-                                      clientLastName: userModel!.lastName!,
-                                      clientFirstName: userModel!.firstName!,
-                                      problem: problemController.text);
-                                },
-                                TextColor: Colors.white,
-                                backgroundColor: buttonColor),
+                            text: 'report'.tr,
+                            borderRadius: 5.0,
+                            fun: () {
+                              FoxCubit.get(context).reportProblem(
+                                  clientUid: userModel!.uId!,
+                                  phoneNumber: userModel!.phone!,
+                                  clientLastName: userModel!.lastName!,
+                                  clientFirstName: userModel!.firstName!,
+                                  problem: problemController.text,
+                                  dateTime: DateTime.now().toString(),
+                                  dateTimeDisplay: DateFormat.yMMMd()
+                                      .add_jm()
+                                      .format(now)
+                                      .toString());
+                            },
+                            TextColor: Colors.white,
+                            backgroundColor: buttonColor),
                         SizedBox(
                           height: 20.0,
                         ),

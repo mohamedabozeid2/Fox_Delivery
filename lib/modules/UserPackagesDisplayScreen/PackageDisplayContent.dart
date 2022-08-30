@@ -16,8 +16,8 @@ class PackageContent extends StatelessWidget {
 
   PackageContent(
       {required this.package,
-      required this.packageIndex,
-      required this.fromTracking});
+        required this.packageIndex,
+        required this.fromTracking});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class PackageContent extends StatelessWidget {
                                   radius: 50,
                                   backgroundColor: secondDefaultColor,
                                   backgroundImage:
-                                      AssetImage('assets/images/package3.png'),
+                                  AssetImage('assets/images/package3.png'),
                                 ),
                                 SizedBox(
                                   height: 10,
@@ -95,19 +95,19 @@ class PackageContent extends StatelessWidget {
                                           .textTheme
                                           .bodyText2!
                                           .copyWith(
-                                              color: secondDefaultColor,
-                                              fontSize: 16),
+                                          color: secondDefaultColor,
+                                          fontSize: 16),
                                     ),
                                     Text(
                                       ': ${
                                       // userPackages[packageIndex]
-                                      package.packageId!}',
+                                          package.packageId!}',
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyText2!
                                           .copyWith(
-                                              color: secondDefaultColor,
-                                              fontSize: 16),
+                                          color: secondDefaultColor,
+                                          fontSize: 16),
                                     ),
                                   ],
                                 )
@@ -188,31 +188,31 @@ class PackageContent extends StatelessWidget {
                                         clientFirstName: /*userPackages[packageIndex]*/ package
                                             .clientFirstName!,
                                         clientLastName:
-                                            /*userPackages[packageIndex]*/ package
-                                                .clientLastName!,
+                                        /*userPackages[packageIndex]*/ package
+                                            .clientLastName!,
                                         clientUid:
-                                            /*userPackages[packageIndex]*/ package
-                                                .clientUid!,
+                                        /*userPackages[packageIndex]*/ package
+                                            .clientUid!,
                                         dateTime: /*userPackages[packageIndex]*/ package
                                             .dateTime!,
                                         dateTimeDisplay:
-                                            /*userPackages[packageIndex]*/ package
-                                                .dateTimeDisplay!,
+                                        /*userPackages[packageIndex]*/ package
+                                            .dateTimeDisplay!,
                                         description:
-                                            /*userPackages[packageIndex]*/ package
-                                                .description!,
+                                        /*userPackages[packageIndex]*/ package
+                                            .description!,
                                         fromLocation:
-                                            /*userPackages[packageIndex]*/ package
-                                                .fromLocation!,
+                                        /*userPackages[packageIndex]*/ package
+                                            .fromLocation!,
                                         toLocation:
-                                            /*userPackages[packageIndex]*/ package
-                                                .toLocation!,
+                                        /*userPackages[packageIndex]*/ package
+                                            .toLocation!,
                                         packageId:
-                                            /*userPackages[packageIndex]*/ package
-                                                .packageId!,
+                                        /*userPackages[packageIndex]*/ package
+                                            .packageId!,
                                         packageName:
-                                            /*userPackages[packageIndex]*/ package
-                                                .packageName!);
+                                        /*userPackages[packageIndex]*/ package
+                                            .packageName!);
                                   },
                                   backgroundColor: Colors.amber,
                                   TextColor: Colors.white),

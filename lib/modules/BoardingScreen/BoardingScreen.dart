@@ -39,6 +39,7 @@ class _BoardingScreenState extends State<BoardingScreen> {
       appBar: AppBar(
         actions: [
           defaultTextButton(
+              textColor: thirdDefaultColor,
               text: 'Skip',
               weight: FontWeight.bold,
               fontSize: 18.0,
@@ -60,31 +61,31 @@ class _BoardingScreenState extends State<BoardingScreen> {
           children: [
             Expanded(
                 child: PageView.builder(
-              onPageChanged: (value) {
-                if (value == boardingList.length - 1) {
-                  setState(() {
-                    isLast = true;
-                  });
-                } else {
-                  setState(() {
-                    isLast = false;
-                  });
-                }
-              },
-              controller: boardingController,
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                return buildBoardingItem(boardingList[index]);
-              },
-              itemCount: boardingList.length,
-            )),
+                  onPageChanged: (value) {
+                    if (value == boardingList.length - 1) {
+                      setState(() {
+                        isLast = true;
+                      });
+                    } else {
+                      setState(() {
+                        isLast = false;
+                      });
+                    }
+                  },
+                  controller: boardingController,
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return buildBoardingItem(boardingList[index]);
+                  },
+                  itemCount: boardingList.length,
+                )),
             Row(
               children: [
                 SmoothPageIndicator(
                     controller: boardingController,
                     count: boardingList.length,
                     effect: ExpandingDotsEffect(
-                      activeDotColor: defaultColor,
+                      activeDotColor: thirdDefaultColor,
                       dotWidth: 15,
                     )),
                 const Spacer(),
@@ -100,7 +101,7 @@ class _BoardingScreenState extends State<BoardingScreen> {
                           curve: Curves.fastOutSlowIn);
                     }
                   },
-                  backgroundColor: defaultColor,
+                  backgroundColor: thirdDefaultColor,
                   child: const Icon(Icons.arrow_forward_ios),
                 )
               ],
@@ -123,11 +124,16 @@ class _BoardingScreenState extends State<BoardingScreen> {
           Text(
             model.title,
             textAlign: TextAlign.center,
+            style: TextStyle(color: secondDefaultColor),
           ),
           const SizedBox(
             height: 10.0,
           ),
-          Text(model.body, textAlign: TextAlign.center),
+          Text(
+            model.body,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: secondDefaultColor),
+          ),
         ],
       ),
     );

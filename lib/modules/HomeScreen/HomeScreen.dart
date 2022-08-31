@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
               slideWidth: MediaQuery
                   .of(context)
                   .size
-                  .width * 0.55,
+                  .width * 0.70,
               openCurve: Curves.fastOutSlowIn,
               menuBackgroundColor: defaultColor.withOpacity(0.4)/*Color(0xff274472)*/ /*0xff5860db*/
           );

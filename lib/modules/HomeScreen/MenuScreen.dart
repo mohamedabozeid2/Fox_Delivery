@@ -84,6 +84,7 @@ class MenuScreen extends StatelessWidget {
 
   Widget buildMenuItem(MenuItemDetails item) {
     return ListTile(
+
       selectedTileColor: Colors.black26,
       selected: currentItem == item,
       minLeadingWidth: 20,

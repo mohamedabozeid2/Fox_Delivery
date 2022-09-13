@@ -44,7 +44,7 @@ class _UserPackagesDisplayScreenState extends State<UserPackagesDisplayScreen> {
                       ? Center(child: CircularProgressIndicator())
                       : Column(
                     children: [
-                      LottieBuilder.asset('assets/anims/order2.json', height: Get.height*0.4,),
+                      userPackages.length != 0 ? LottieBuilder.asset('assets/anims/order2.json', height: Get.height*0.4,) : Container(),
                       userPackages.length != 0
                           ? Expanded(
                         child: ListView.separated(
@@ -69,16 +69,17 @@ class _UserPackagesDisplayScreenState extends State<UserPackagesDisplayScreen> {
                               mainAxisAlignment:
                               MainAxisAlignment.center,
                               children: [
-                                Icon(
-                                  Icons.work_off,
-                                  color: Colors.white,
-                                  size: 50.0,
-                                ),
+                                LottieBuilder.asset('assets/anims/empty.json'),
+                                // Icon(
+                                //   Icons.work_off,
+                                //   color: Colors.white,
+                                //   size: 50.0,
+                                // ),
                                 SizedBox(
                                   height: 20,
                                 ),
                                 Text(
-                                  'No Packages Yet',
+                                  'No Packages',
                                   style: TextStyle(
                                       color: Colors.white),
                                 ),

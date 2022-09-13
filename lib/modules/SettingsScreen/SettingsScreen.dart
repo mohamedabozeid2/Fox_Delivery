@@ -9,6 +9,7 @@ import 'package:fox_delivery/shared/cubit/cubit.dart';
 import 'package:fox_delivery/shared/cubit/states.dart';
 import 'package:fox_delivery/styles/Themes.dart';
 import 'package:get/get.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 class SettingScreen extends StatelessWidget {
   final ZoomDrawerController drawerController;
@@ -53,42 +54,60 @@ class SettingScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              child: SizedBox(
-                                width: Get.width * 0.4,
-                                child: DropdownButtonFormField<String>(
-                                    borderRadius: BorderRadius.circular(5),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText2!
-                                        .copyWith(color: Colors.white),
-                                    decoration: InputDecoration(
-                                        enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                            borderSide: BorderSide(
-                                                width: 2, color: defaultColor)),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                            borderSide: BorderSide(
-                                                width: 2,
-                                                color: defaultColor))),
-                                    dropdownColor: dropDownMenuColor,
-                                    value: selectedLanguage,
-                                    items: FoxCubit.get(context)
-                                        .languagesList
-                                        .map(buildMenuItem)
-                                        .toList(),
-                                    onChanged: (value) {
-                                      localeController.changeLanguage(
-                                          language: value!);
-                                    }),
-                              ),
+                            ToggleSwitch(
+                              textDirectionRTL: selectedLanguage != 'en' ? true : false,
+
+                              customWidths: [90.0, 90.0],
+                              cornerRadius: 20.0,
+                              activeBgColors: [[thirdDefaultColor],[thirdDefaultColor]],
+                              activeFgColor: Colors.white,
+                              inactiveBgColor: Colors.white,
+                              inactiveFgColor: Colors.black,
+                              totalSwitches: 2,
+                              labels: [selectedLanguage == 'en' ? 'English' : 'العربية', selectedLanguage == 'en' ? 'العربية' : 'English'],
+                              // icons: [null, FontAwesomeIcons.times],
+                              onToggle: (index) {
+
+                                localeController.changeLanguage(language: index == 1 ? 'en' : 'ar');
+                                // print('switched to: $index');
+                              },
                             ),
+                            // Container(
+                            //   decoration: BoxDecoration(
+                            //     borderRadius: BorderRadius.circular(15.0),
+                            //   ),
+                            //   child: SizedBox(
+                            //     width: Get.width * 0.4,
+                            //     child: DropdownButtonFormField<String>(
+                            //         borderRadius: BorderRadius.circular(5),
+                            //         style: Theme.of(context)
+                            //             .textTheme
+                            //             .bodyText2!
+                            //             .copyWith(color: Colors.white),
+                            //         decoration: InputDecoration(
+                            //             enabledBorder: OutlineInputBorder(
+                            //                 borderRadius:
+                            //                     BorderRadius.circular(12.0),
+                            //                 borderSide: BorderSide(
+                            //                     width: 2, color: defaultColor)),
+                            //             focusedBorder: OutlineInputBorder(
+                            //                 borderRadius:
+                            //                     BorderRadius.circular(12.0),
+                            //                 borderSide: BorderSide(
+                            //                     width: 2,
+                            //                     color: defaultColor))),
+                            //         dropdownColor: dropDownMenuColor,
+                            //         value: selectedLanguage,
+                            //         items: FoxCubit.get(context)
+                            //             .languagesList
+                            //             .map(buildMenuItem)
+                            //             .toList(),
+                            //         onChanged: (value) {
+                            //           localeController.changeLanguage(
+                            //               language: value!);
+                            //         }),
+                            //   ),
+                            // ),
                             Text(
                               'language'.tr,
                               style: Theme.of(context)
@@ -114,7 +133,7 @@ class SettingScreen extends StatelessWidget {
                             controller: locationController,
                             label: userModel!.location!,
                             prefixIcon: Icon(Icons.location_on),
-                            type: TextInputType.phone,
+                            type: TextInputType.text,
                             borderColor: Colors.white),
                         SizedBox(
                           height: 10.0,

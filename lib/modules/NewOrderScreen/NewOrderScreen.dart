@@ -35,7 +35,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
       listener: (context, state) {
         if (state is FoxNewOrderSuccessState) {
           // navigateTo(context, UserPackagesDisplayScreen());
-          navigateTo(context, MainScreen(drawerController: drawerController));
+          navigateAndFinish(context: context,widget:  MainScreen(drawerController: drawerController));
           Get.snackbar('Fox Delivery', 'Your order submitted successfully'.tr,
               colorText: Colors.white, backgroundColor: Colors.green[400]);
         } else if (state is FoxNewOrderErrorState) {
@@ -56,7 +56,11 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                     key: formKey,
                     child: Column(
                       children: [
-                        LottieBuilder.asset('assets/anims/order.json', width: Get.width*0.95,height: Get.height*0.4,),
+                        LottieBuilder.asset(
+                          'assets/anims/order.json',
+                          width: Get.width * 0.95,
+                          height: Get.height * 0.4,
+                        ),
                         // Container(
                         //     child: Image(
                         //         image:
@@ -170,7 +174,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                                 color: thirdDefaultColor,
                               ))
                             : ConfirmationSlider(
-                          text: 'slide_to_confirm'.tr,
+                                text: 'slide_to_confirm'.tr,
                                 onConfirmation: () {
                                   if (formKey.currentState!.validate()) {
                                     FoxCubit.get(context).newOrder(

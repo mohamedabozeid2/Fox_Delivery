@@ -6,6 +6,7 @@ import 'package:fox_delivery/shared/cubit/cubit.dart';
 import 'package:fox_delivery/shared/cubit/states.dart';
 import 'package:fox_delivery/styles/Themes.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class PackageTrackPage extends StatefulWidget {
   final int id;
@@ -80,18 +81,19 @@ class _PackageTrackPageState extends State<PackageTrackPage> {
                                     child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
-                                    Icons.broken_image,
-                                    color: thirdDefaultColor,
-                                    size: 55,
-                                  ),
+                                  LottieBuilder.asset('assets/anims/notFound.json'),
+                                  // Icon(
+                                  //   Icons.broken_image,
+                                  //   color: thirdDefaultColor,
+                                  //   size: 55,
+                                  // ),
                                   SizedBox(
                                     height: 20.0,
                                   ),
                                   Text(
                                     'package_not_found'.tr,
                                     style:
-                                        TextStyle(color: thirdDefaultColor),
+                                        TextStyle(color: Colors.white),
                                   ),
                                 ],
                               ))),

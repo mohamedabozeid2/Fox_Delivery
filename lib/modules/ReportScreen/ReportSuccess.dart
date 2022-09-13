@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fox_delivery/modules/HomeScreen/HomeScreen.dart';
 import 'package:fox_delivery/shared/components/components.dart';
 import 'package:fox_delivery/styles/Themes.dart';
+import 'package:lottie/lottie.dart';
 
 class ReportSuccessScreen extends StatelessWidget {
   const ReportSuccessScreen({Key? key}) : super(key: key);
@@ -19,8 +20,7 @@ class ReportSuccessScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.check_circle_outline,
-                        color: thirdDefaultColor, size: 75),
+                    LottieBuilder.asset('assets/anims/sucess.json'),
                     SizedBox(
                       height: 15,
                     ),

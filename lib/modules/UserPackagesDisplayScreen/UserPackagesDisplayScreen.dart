@@ -8,6 +8,7 @@ import 'package:fox_delivery/shared/cubit/cubit.dart';
 import 'package:fox_delivery/shared/cubit/states.dart';
 import 'package:fox_delivery/styles/Themes.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class UserPackagesDisplayScreen extends StatefulWidget {
   @override
@@ -43,6 +44,7 @@ class _UserPackagesDisplayScreenState extends State<UserPackagesDisplayScreen> {
                       ? Center(child: CircularProgressIndicator())
                       : Column(
                     children: [
+                      LottieBuilder.asset('assets/anims/order2.json', height: Get.height*0.4,),
                       userPackages.length != 0
                           ? Expanded(
                         child: ListView.separated(
@@ -54,7 +56,7 @@ class _UserPackagesDisplayScreenState extends State<UserPackagesDisplayScreen> {
                             },
                             separatorBuilder: (context, index) {
                               return SizedBox(
-                                height: 10,
+                                height: 2,
                               );
                             },
                             itemCount: userPackages.length),
@@ -118,7 +120,7 @@ class _UserPackagesDisplayScreenState extends State<UserPackagesDisplayScreen> {
 
   Widget packageItemBuilder({required PackageModel model, required int index}) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.only(top: 10,right: 10, left: 10),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.0),

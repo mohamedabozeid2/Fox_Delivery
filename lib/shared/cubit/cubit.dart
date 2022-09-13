@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +14,7 @@ import 'package:fox_delivery/shared/cubit/states.dart';
 import 'package:fox_delivery/shared/network/EndPoint.dart';
 import 'package:fox_delivery/shared/network/local/CacheHelper.dart';
 import 'package:fox_delivery/shared/network/remote/Dio_Helper.dart';
+import 'package:fox_delivery/styles/Themes.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
@@ -51,11 +53,11 @@ class FoxCubit extends Cubit<FoxStates> {
 
   void newOrder(
       {required String packageName,
-        required String description,
-        required String fromLocation,
-        required String toLocation,
-        required String dateTime,
-        required String dateTimeDisplay}) {
+      required String description,
+      required String fromLocation,
+      required String toLocation,
+      required String dateTime,
+      required String dateTimeDisplay}) {
     emit(FoxNewOrderLoadingState());
     PackageModel model = PackageModel(
       toLocation: toLocation,
@@ -74,7 +76,7 @@ class FoxCubit extends Cubit<FoxStates> {
         .collection('packages')
         .doc(packageIDCounter.toString())
         .set(model.toMap())
-    // .add(model.toMap())
+        // .add(model.toMap())
         .then((value) {
       FirebaseFirestore.instance
           .collection('users')
@@ -113,11 +115,22 @@ class FoxCubit extends Cubit<FoxStates> {
           colorText: Colors.white, backgroundColor: Colors.red);
     }
   }
+  void forgetPassword({required String email}){
+    emit(FoxResetPasswordLoadingState());
+    FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value){
+      Get.snackbar('Fox Delivery', 'Check your email', backgroundColor: buttonColor);
+      emit(FoxResetPasswordSuccessState());
+    }).catchError((error){
+      print(error.toString());
+      emit(FoxResetPasswordErrorState());
+    });
+  }
+
 
   void getUserPackages(
       {bool newOrder = false,
-        bool fromTracking =
-        false} /*{bool fromTrackingScreen = false, int? id}*/) {
+      bool fromTracking =
+          false} /*{bool fromTrackingScreen = false, int? id}*/) {
     userPackages = [];
     packagesID = [];
     if (fromTracking == false) {
@@ -330,32 +343,31 @@ class FoxCubit extends Cubit<FoxStates> {
         .collection('users')
         .doc(uId!)
         .update({
-      'email': userModel!.email,
-      'firstName': userModel!.firstName,
-      'lastName': userModel!.lastName,
-      'isEmailVerified': userModel!.isEmailVerified,
-      'completedPackages': userModel!.completedPackages,
-      'notCompletedPackages': userModel!.notCompletedPackages,
-      'packageNumber': userModel!.packageNumber,
-      'phone': userModel!.phone,
-      'uId': userModel!.uId,
-      'deviceToken': deviceToken,
-    })
+          'email': userModel!.email,
+          'firstName': userModel!.firstName,
+          'lastName': userModel!.lastName,
+          'isEmailVerified': userModel!.isEmailVerified,
+          'completedPackages': userModel!.completedPackages,
+          'notCompletedPackages': userModel!.notCompletedPackages,
+          'packageNumber': userModel!.packageNumber,
+          'phone': userModel!.phone,
+          'uId': userModel!.uId,
+          'deviceToken': deviceToken,
+        })
         .then((value) {})
         .catchError((error) {
-      print(error.toString());
-    });
+          print(error.toString());
+        });
   }
 
-  void reportProblem({
-    required String clientUid,
-    required String clientLastName,
-    required String clientFirstName,
-    required String phoneNumber,
-    required String problem,
-    required String dateTime,
-    required String dateTimeDisplay
-  }) {
+  void reportProblem(
+      {required String clientUid,
+      required String clientLastName,
+      required String clientFirstName,
+      required String phoneNumber,
+      required String problem,
+      required String dateTime,
+      required String dateTimeDisplay}) {
     emit(FoxReportProblemLoadingState());
     ProblemModel model = ProblemModel(
         clientUid: clientUid,
@@ -364,9 +376,7 @@ class FoxCubit extends Cubit<FoxStates> {
         clientFirstName: clientFirstName,
         problem: problem,
         dateTime: dateTime,
-        dateTimeDisplay:dateTimeDisplay
-
-    );
+        dateTimeDisplay: dateTimeDisplay);
     FirebaseFirestore.instance
         .collection('problem')
         .add(model.toMap())

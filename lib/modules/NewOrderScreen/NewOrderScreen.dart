@@ -8,6 +8,7 @@ import 'package:fox_delivery/shared/cubit/states.dart';
 import 'package:fox_delivery/styles/Themes.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:slide_to_confirm/slide_to_confirm.dart';
 
 class NewOrderScreen extends StatefulWidget {
@@ -55,10 +56,11 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                     key: formKey,
                     child: Column(
                       children: [
-                        Container(
-                            child: Image(
-                                image:
-                                    AssetImage('assets/images/new_order.png'))),
+                        LottieBuilder.asset('assets/anims/order.json', width: Get.width*0.95,height: Get.height*0.4,),
+                        // Container(
+                        //     child: Image(
+                        //         image:
+                        //             AssetImage('assets/images/new_order.png'))),
                         SizedBox(
                           height: 20,
                         ),

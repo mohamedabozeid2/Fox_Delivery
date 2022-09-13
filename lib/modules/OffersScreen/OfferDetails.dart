@@ -8,7 +8,7 @@ class OfferDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(offers.last.label!),
+        title: Text('Offer Poster'),
       ),
       body: CustomScrollView(
         slivers: [
@@ -17,21 +17,12 @@ class OfferDetails extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
                     child: Column(
                       children: [
-                        Text(
-                          offers.last.body!,
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    color: thirdDefaultColor,
-                                  ),
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
                         Container(
                           height: Get.height * 0.9,
                           width: double.infinity,
@@ -42,6 +33,7 @@ class OfferDetails extends StatelessWidget {
                                       '${offers.last.offerImage}'))),
                         ),
                       ],
+                      crossAxisAlignment: CrossAxisAlignment.start,
                     ),
                   ),
                 ],

@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 
 var defaultColor = const Color(0xff5967a4);
 var secondDefaultColor = const Color(0xff0c1f40);
+// var secondDefaultColor = const Color(0xff690f30);
+
 var thirdDefaultColor = const Color(0xff097e76);
 var buttonColor = const Color(0xff04BD92);
 var dropDownMenuColor = thirdDefaultColor;

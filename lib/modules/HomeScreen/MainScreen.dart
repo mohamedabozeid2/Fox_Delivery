@@ -15,6 +15,7 @@ import 'package:fox_delivery/shared/cubit/states.dart';
 import 'package:fox_delivery/shared/network/local/CacheHelper.dart';
 import 'package:fox_delivery/styles/Themes.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class MainScreen extends StatefulWidget {
   final ZoomDrawerController drawerController;
@@ -176,26 +177,27 @@ class _MainScreenState extends State<MainScreen> {
                                         ],
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 20.0,
-                                          bottom: 5.0,
-                                          right: 20.0,
-                                          left: 20.0),
-                                      child: Container(
-                                        clipBehavior:
-                                        Clip.antiAliasWithSaveLayer,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                          BorderRadius.circular(20.0),
-                                        ),
-                                        child: Image(
-                                          image: AssetImage(
-                                              'assets/images/Online_Shopping3.png'),
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                    )
+                                    LottieBuilder.asset('assets/anims/delivery.json', height: Get.height*0.4,width: Get.width*0.95,),
+                                    // Padding(
+                                    //   padding: const EdgeInsets.only(
+                                    //       top: 20.0,
+                                    //       bottom: 5.0,
+                                    //       right: 20.0,
+                                    //       left: 20.0),
+                                    //   child: Container(
+                                    //     clipBehavior:
+                                    //     Clip.antiAliasWithSaveLayer,
+                                    //     decoration: BoxDecoration(
+                                    //       borderRadius:
+                                    //       BorderRadius.circular(20.0),
+                                    //     ),
+                                    //     child: Image(
+                                    //       image: AssetImage(
+                                    //           'assets/images/Online_Shopping3.png'),
+                                    //       fit: BoxFit.fill,
+                                    //     ),
+                                    //   ),
+                                    // )
                                   ],
                                 ),
                               ),

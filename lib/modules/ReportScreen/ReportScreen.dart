@@ -8,9 +8,11 @@ import 'package:fox_delivery/shared/cubit/states.dart';
 import 'package:fox_delivery/styles/Themes.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 class ReportScreen extends StatelessWidget {
   var problemController = TextEditingController();
+  var formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,55 +33,67 @@ class ReportScreen extends StatelessWidget {
                 child: Center(
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          'what_is_your_problem'.tr,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(color: Colors.white),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        textFormFieldWithHint(
-                            context: context,
-                            controller: problemController,
-                            label: 'problem'.tr,
-                            type: TextInputType.text,
-                            borderRadius: 5.0,
-                            borderColor: Colors.transparent),
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                        state is FoxReportProblemLoadingState
-                            ? Center(
-                            child: CircularProgressIndicator(
-                              color: buttonColor,
-                            ))
-                            : defaultButton(
-                            text: 'report'.tr,
-                            borderRadius: 5.0,
-                            fun: () {
-                              FoxCubit.get(context).reportProblem(
-                                  clientUid: userModel!.uId!,
-                                  phoneNumber: userModel!.phone!,
-                                  clientLastName: userModel!.lastName!,
-                                  clientFirstName: userModel!.firstName!,
-                                  problem: problemController.text,
-                                  dateTime: DateTime.now().toString(),
-                                  dateTimeDisplay: DateFormat.yMMMd()
-                                      .add_jm()
-                                      .format(now)
-                                      .toString());
-                            },
-                            TextColor: Colors.white,
-                            backgroundColor: buttonColor),
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                      ],
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        children: [
+                          LottieBuilder.asset(
+                              'assets/anims/problem.json'
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            'what_is_your_problem'.tr,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2!
+                                .copyWith(color: Colors.white),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          textFormFieldWithHint(
+                              context: context,
+                              controller: problemController,
+                              label: 'problem'.tr,
+                              validation: 'Please enter your problem',
+                              type: TextInputType.text,
+                              borderRadius: 5.0,
+                              borderColor: Colors.transparent),
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          state is FoxReportProblemLoadingState
+                              ? Center(
+                              child: CircularProgressIndicator(
+                                color: buttonColor,
+                              ))
+                              : defaultButton(
+                              text: 'report'.tr,
+                              borderRadius: 5.0,
+                              fun: () {
+                                if(formKey.currentState!.validate()){
+                                  FoxCubit.get(context).reportProblem(
+                                      clientUid: userModel!.uId!,
+                                      phoneNumber: userModel!.phone!,
+                                      clientLastName: userModel!.lastName!,
+                                      clientFirstName: userModel!.firstName!,
+                                      problem: problemController.text,
+                                      dateTime: DateTime.now().toString(),
+                                      dateTimeDisplay: DateFormat.yMMMd()
+                                          .add_jm()
+                                          .format(now)
+                                          .toString());
+                                }
+                              },
+                              TextColor: Colors.white,
+                              backgroundColor: buttonColor),
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

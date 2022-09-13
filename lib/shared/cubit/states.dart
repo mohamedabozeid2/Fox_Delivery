@@ -33,6 +33,10 @@ class FoxReportProblemLoadingState extends FoxStates{}
 class FoxReportProblemSuccessState extends FoxStates{}
 class FoxReportProblemErrorState extends FoxStates{}
 
+class FoxResetPasswordLoadingState extends FoxStates{}
+class FoxResetPasswordSuccessState extends FoxStates{}
+class FoxResetPasswordErrorState extends FoxStates{}
+
 class FoxGetOffersLoadingState extends FoxStates{}
 class FoxGetOffersSuccessState extends FoxStates{}
 class FoxGetOffersErrorState extends FoxStates{}

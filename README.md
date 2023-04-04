@@ -1,4 +1,4 @@
-# fox_delivery
+# Fox Delivery
 
 It is an application for shipping packages and delivery between governorates in Egypt.
 The application has two interfaces, one for the user and another for the owner; the user 
@@ -8,15 +8,26 @@ The owner application enables him to track all the packages and users, receive t
 reports, and post new offers.
 
 
-![Screenshot_2023-03-13-19-48-55-018_com example fox_delivery](https://user-images.githubusercontent.com/52718382/224788679-edf92e8c-740b-4b7e-9e1d-cf73a7d3a78d.jpg)
+![screen_1](https://user-images.githubusercontent.com/52718382/229701378-907b2c51-d7a5-471e-9107-e6d01f1a40fb.png)
+
 #
-![Screenshot_2023-03-13-19-49-15-345_com example fox_delivery](https://user-images.githubusercontent.com/52718382/224788715-3c507f77-8d47-4153-840d-4cc21ab235b6.jpg)
+
+![screen_2](https://user-images.githubusercontent.com/52718382/229701388-ed958d9d-785a-4123-b9a7-85755c8d7644.png)
+
 #
-![Screenshot_2023-03-13-19-55-11-075_com example fox_delivery](https://user-images.githubusercontent.com/52718382/224788746-bf491d1f-b2d3-4821-9dc2-c682993d0452.jpg)
+
+![screen_3](https://user-images.githubusercontent.com/52718382/229701402-a929b7fa-e2d5-4996-b9e2-78ca98345797.png)
+
 #
-![Screenshot_2023-03-13-19-50-45-858_com example fox_delivery](https://user-images.githubusercontent.com/52718382/224788776-e4b06ee5-7b2c-4b7f-9b0d-94c2a893080d.jpg)
+
+![screen_4](https://user-images.githubusercontent.com/52718382/229701411-a94a0210-c8e9-483b-a552-fc8923d2e884.png)
+
 #
-![Screenshot_2023-03-13-19-54-13-816_com example fox_delivery](https://user-images.githubusercontent.com/52718382/224788791-bc5a6511-49b6-4c53-b83e-5760aaf64979.jpg)
+
+![screen_5](https://user-images.githubusercontent.com/52718382/229701419-fcb7d2ce-0937-4c98-a5e5-a8064781beeb.png)
+
 #
-![Screenshot_2023-03-13-19-54-25-353_com example fox_delivery](https://user-images.githubusercontent.com/52718382/224788819-7d159b0d-4e49-499b-aa47-9fa3f59caadb.jpg)
+
+![screen_6](https://user-images.githubusercontent.com/52718382/229701433-c54bb8c8-8af8-4d42-b34a-dd9289a7904c.png)
+
 #
